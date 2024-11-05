@@ -346,7 +346,12 @@ const About = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Icon className={`w-7 h-7 ${color} opacity-70 hover:opacity-100 transition-opacity`} />
+                  <Icon className={`w-7 h-7 ${color} opacity-70 
+                    transition-all duration-300
+                    hover:opacity-100 hover:scale-125 
+                    hover:drop-shadow-[0_0_10px_currentColor]
+                    hover:animate-pulse`} 
+                  />
                   <span className="absolute top-full mt-2 text-xs text-gray-400 
                     opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                     {tooltip}
