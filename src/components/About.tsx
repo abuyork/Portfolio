@@ -1,7 +1,12 @@
-import { Code2, Globe, Server, Sparkles } from 'lucide-react';
+import { Laptop, Database, Layout, Palette } from 'lucide-react';
 import { motion, useAnimation, useInView, useScroll } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { AuthAnimatedBackground } from './common/AnimatedBackground';
+import { 
+  SiReact, SiJavascript, SiNodedotjs, SiExpress, SiNestjs, 
+  SiCss3, SiHtml5, SiPython, SiGraphql, SiDocker, 
+  SiAmazon, SiFigma, SiTailwindcss 
+} from 'react-icons/si';
 
 const About = () => {
   const controls = useAnimation();
@@ -16,7 +21,7 @@ const About = () => {
 
   const services = [
     {
-      icon: Code2,
+      icon: Layout,
       title: 'Frontend Development',
       description: 'Creating beautiful, responsive user interfaces with modern frameworks and best practices.',
       gradientFrom: 'from-indigo-400/20',
@@ -27,7 +32,7 @@ const About = () => {
       iconBg: 'from-indigo-500 to-blue-600',
     },
     {
-      icon: Server,
+      icon: Database,
       title: 'Backend Development',
       description: 'Building robust server-side applications and APIs with scalable architecture.',
       gradientFrom: 'from-emerald-400/20',
@@ -38,7 +43,7 @@ const About = () => {
       iconBg: 'from-emerald-500 to-teal-600',
     },
     {
-      icon: Globe,
+      icon: Laptop,
       title: 'Full Stack Development',
       description: 'End-to-end development of web applications from concept to deployment.',
       gradientFrom: 'from-violet-400/20',
@@ -49,7 +54,7 @@ const About = () => {
       iconBg: 'from-violet-500 to-purple-600',
     },
     {
-      icon: Sparkles,
+      icon: Palette,
       title: 'UI/UX Design',
       description: 'Designing intuitive and engaging user experiences with modern design principles.',
       gradientFrom: 'from-rose-400/20',
@@ -89,18 +94,6 @@ const About = () => {
     transition: 'transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1)',
   });
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.2,
-        duration: 0.8,
-        ease: [0.215, 0.61, 0.355, 1]
-      }
-    })
-  };
 
   return (
     <motion.section 
@@ -172,9 +165,9 @@ const About = () => {
           />
         </motion.div>
 
-        <div className="grid lg:grid-cols-[1fr,1.5fr] gap-8 items-start h-full">
+        <div className="grid lg:grid-cols-[1fr,1.5fr] gap-8 items-start">
           <motion.div 
-            className="space-y-6 h-full flex flex-col justify-between"
+            className="space-y-6 flex flex-col"
             style={parallaxStyle(0.2)}
           >
             <motion.p
@@ -202,58 +195,10 @@ const About = () => {
                 <li>Creative problem-solving & technical innovation</li>
               </ul>
             </motion.p>
-
-            <motion.div 
-              className="flex gap-4"
-              variants={textVariants}
-              custom={3}
-            >
-              <motion.a 
-                href="#contact" 
-                className="group relative inline-flex items-center px-6 py-2.5 overflow-hidden rounded-xl text-sm font-medium"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-xl opacity-90 
-                  group-hover:opacity-100 transition-all duration-300 group-hover:scale-110 animate-gradient-xy" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 rounded-xl blur-sm 
-                  group-hover:blur-md transition-all duration-300" 
-                />
-                <span className="relative z-10 text-white group-hover:text-blue-100 transition-colors duration-300">
-                  Get in Touch
-                </span>
-                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-xl blur-xl 
-                  opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse" 
-                />
-              </motion.a>
-
-              <motion.a 
-                href="#projects" 
-                className="group relative inline-flex items-center px-6 py-2.5 overflow-hidden rounded-xl text-sm font-medium
-                  border border-blue-500/30 hover:border-blue-400/50 transition-colors duration-300"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl opacity-0 
-                  group-hover:opacity-100 transition-all duration-300" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-indigo-400/5 rounded-xl blur-sm 
-                  group-hover:blur-md transition-all duration-300" 
-                />
-                <span className="relative z-10 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent 
-                  group-hover:from-blue-300 group-hover:to-indigo-300 transition-all duration-300">
-                  View Projects
-                </span>
-                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-400/10 to-indigo-400/10 rounded-xl blur-xl 
-                  opacity-0 group-hover:opacity-100 transition-all duration-300" 
-                />
-              </motion.a>
-            </motion.div>
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-2 gap-4 relative h-full"
+            className="grid grid-cols-2 gap-4 relative"
             style={parallaxStyle(0.3)}
           >
             {services.map((service, index) => (
@@ -341,6 +286,67 @@ const About = () => {
                 `} />
               </motion.div>
             ))}
+          </motion.div>
+
+          {/* Tech stack card */}
+          <motion.div
+            className="col-span-full mt-8 relative overflow-hidden backdrop-blur-sm bg-[#1a1f2e]/30 
+              border border-blue-500/10 hover:border-blue-500/20 rounded-2xl py-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ 
+              backgroundColor: "rgba(26, 31, 46, 0.5)",
+              zIndex: 10,
+            }}
+            transition={{ duration: 0.3 }}
+            style={parallaxStyle(0.2)}
+          >
+            <div className="absolute inset-0 opacity-0 hover:opacity-10 transition-opacity duration-300">
+              <div className="absolute w-full h-full bg-gradient-to-br from-blue-400/20 to-purple-600/20" />
+              <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay" />
+              <div className="absolute -top-1/2 -right-1/2 w-full h-full rounded-full 
+                bg-gradient-to-br from-blue-400/20 to-purple-600/20 blur-3xl opacity-20 transform rotate-12" />
+            </div>
+
+            <div className="flex items-center justify-between px-12">
+              {[
+                { Icon: SiReact, color: 'text-[#61DAFB]', tooltip: 'React' },
+                { Icon: SiJavascript, color: 'text-[#F7DF1E]', tooltip: 'JavaScript' },
+                { Icon: SiHtml5, color: 'text-[#E34F26]', tooltip: 'HTML5' },
+                { Icon: SiCss3, color: 'text-[#1572B6]', tooltip: 'CSS3' },
+                { Icon: SiTailwindcss, color: 'text-[#38B2AC]', tooltip: 'Tailwind CSS' },
+                { Icon: SiNodedotjs, color: 'text-[#339933]', tooltip: 'Node.js' },
+                { Icon: SiExpress, color: 'text-gray-400', tooltip: 'Express' },
+                { Icon: SiNestjs, color: 'text-[#E0234E]', tooltip: 'NestJS' },
+                { Icon: SiPython, color: 'text-[#3776AB]', tooltip: 'Python' },
+                { Icon: SiGraphql, color: 'text-[#E10098]', tooltip: 'GraphQL' },
+                { Icon: SiDocker, color: 'text-[#2496ED]', tooltip: 'Docker' },
+                { Icon: SiAmazon, color: 'text-[#FF9900]', tooltip: 'AWS' },
+                { Icon: SiFigma, color: 'text-[#F24E1E]', tooltip: 'Figma' },
+              ].map(({ Icon, color, tooltip }, index) => (
+                <motion.div
+                  key={tooltip}
+                  className="group relative"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Icon className={`w-7 h-7 ${color} opacity-70 hover:opacity-100 transition-opacity`} />
+                  <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-gray-400 
+                    opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    {tooltip}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div 
+              className="absolute h-[1px] left-0 bottom-0 w-2/3 bg-gradient-to-r from-transparent 
+                via-blue-400 to-transparent"
+              initial={{ scaleX: 0 }}
+              whileHover={{ scaleX: 1 }}
+              transition={{ duration: 0.3 }}
+            />
           </motion.div>
         </div>
       </div>
