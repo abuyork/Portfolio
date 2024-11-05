@@ -19,29 +19,45 @@ const About = () => {
       icon: Code2,
       title: 'Frontend Development',
       description: 'Creating beautiful, responsive user interfaces with modern frameworks and best practices.',
-      gradientFrom: 'from-blue-400/20',
+      gradientFrom: 'from-indigo-400/20',
       gradientTo: 'to-blue-600/20',
+      accentLight: 'from-indigo-400',
+      accentDark: 'to-blue-600',
+      borderAccent: 'border-blue-500/10 group-hover:border-blue-500/20',
+      iconBg: 'from-indigo-500 to-blue-600',
     },
     {
       icon: Server,
       title: 'Backend Development',
       description: 'Building robust server-side applications and APIs with scalable architecture.',
       gradientFrom: 'from-emerald-400/20',
-      gradientTo: 'to-emerald-600/20',
+      gradientTo: 'to-teal-600/20',
+      accentLight: 'from-emerald-400',
+      accentDark: 'to-teal-600',
+      borderAccent: 'border-emerald-500/10 group-hover:border-emerald-500/20',
+      iconBg: 'from-emerald-500 to-teal-600',
     },
     {
       icon: Globe,
       title: 'Full Stack Development',
       description: 'End-to-end development of web applications from concept to deployment.',
-      gradientFrom: 'from-purple-400/20',
+      gradientFrom: 'from-violet-400/20',
       gradientTo: 'to-purple-600/20',
+      accentLight: 'from-violet-400',
+      accentDark: 'to-purple-600',
+      borderAccent: 'border-purple-500/10 group-hover:border-purple-500/20',
+      iconBg: 'from-violet-500 to-purple-600',
     },
     {
       icon: Sparkles,
       title: 'UI/UX Design',
       description: 'Designing intuitive and engaging user experiences with modern design principles.',
-      gradientFrom: 'from-yellow-400/20',
-      gradientTo: 'to-yellow-600/20',
+      gradientFrom: 'from-rose-400/20',
+      gradientTo: 'to-pink-600/20',
+      accentLight: 'from-rose-400',
+      accentDark: 'to-pink-600',
+      borderAccent: 'border-pink-500/10 group-hover:border-pink-500/20',
+      iconBg: 'from-rose-500 to-pink-600',
     },
   ];
 
@@ -212,11 +228,11 @@ const About = () => {
             {services.map((service, index) => (
               <motion.div 
                 key={index}
-                className={`group relative overflow-hidden backdrop-blur-sm bg-[#1a1f2e]/30 border border-white/5
-                  ${index === 0 ? 'rounded-[2rem_1rem_2rem_1rem] translate-y-4 translate-x-4 z-[2]' : ''}
-                  ${index === 1 ? 'rounded-[1rem_2rem_1rem_2rem] mt-12 -translate-x-4 z-[1]' : ''}
-                  ${index === 2 ? 'rounded-[2rem_1rem_1rem_2rem] -mt-8 translate-x-6 z-[3]' : ''}
-                  ${index === 3 ? 'rounded-[1rem_2rem_2rem_1rem] translate-y-4 -translate-x-6 z-[4]' : ''}
+                className={`group relative overflow-hidden backdrop-blur-sm bg-[#1a1f2e]/30 border ${service.borderAccent}
+                  ${index === 0 ? 'rounded-[2rem_1rem_2rem_1rem] col-span-2 row-span-1 translate-y-4 z-[4]' : ''}
+                  ${index === 1 ? 'rounded-[1rem_2rem_1rem_2rem] translate-x-2 z-[2]' : ''}
+                  ${index === 2 ? 'rounded-[2rem_1rem_1rem_2rem] -translate-x-2 z-[2]' : ''}
+                  ${index === 3 ? 'rounded-[1rem_2rem_2rem_1rem] col-span-2 translate-y-2 z-[1]' : ''}
                 `}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -239,33 +255,34 @@ const About = () => {
 
                 {/* Content container with asymmetric padding */}
                 <div className={`relative p-5 flex flex-col h-full
-                  ${index === 0 ? 'pl-6' : ''}
-                  ${index === 1 ? 'pr-6' : ''}
-                  ${index === 2 ? 'pl-6' : ''}
-                  ${index === 3 ? 'pr-6' : ''}
+                  ${index === 0 ? 'md:flex-row md:items-center md:gap-6' : ''}
+                  ${index === 1 || index === 2 ? 'justify-between' : ''}
+                  ${index === 3 ? 'md:flex-row md:items-center md:gap-6' : ''}
                 `}>
                   {/* Icon and title with dynamic positioning */}
-                  <div className={`flex items-center space-x-3 mb-3
-                    ${index % 2 === 0 ? 'justify-start' : 'justify-end flex-row-reverse space-x-reverse'}
-                  `}>
-                    <div className={`flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br ${service.gradientFrom} ${service.gradientTo} p-1.5 
+                  <div className={`flex items-center space-x-3 mb-3 ${index === 0 ? 'md:mb-0' : ''}`}>
+                    <div className={`flex-shrink-0 ${index === 0 ? 'w-12 h-12' : 'w-8 h-8'} rounded-lg 
+                      bg-gradient-to-br ${service.gradientFrom} ${service.gradientTo} p-2
                       opacity-80 group-hover:opacity-100 transition-opacity transform group-hover:rotate-12 duration-300`}>
                       <service.icon className="w-full h-full text-white" />
                     </div>
-                    <h3 className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
+                    <h3 className={`font-medium text-white group-hover:text-blue-400 transition-colors
+                      ${index === 0 ? 'text-lg' : 'text-sm'}`}>
                       {service.title}
                     </h3>
                   </div>
 
                   {/* Description with custom border */}
-                  <p className="text-xs text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors
-                    relative pl-3 border-l border-white/10 group-hover:border-blue-500/30">
+                  <p className={`text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors
+                    relative pl-3 border-l border-white/10 group-hover:border-blue-500/30
+                    ${index === 0 ? 'text-sm md:max-w-[60%]' : 'text-xs'}
+                  `}>
                     {service.description}
                   </p>
 
-                  {/* Animated accent lines */}
+                  {/* Animated accent lines with unique colors */}
                   <motion.div 
-                    className={`absolute h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent
+                    className={`absolute h-[1px] bg-gradient-to-r from-transparent ${service.accentLight} ${service.accentDark} to-transparent
                       ${index % 2 === 0 ? 'left-0 bottom-0 w-2/3' : 'right-0 bottom-0 w-2/3'}
                     `}
                     initial={{ scaleX: 0 }}
@@ -273,7 +290,7 @@ const About = () => {
                     transition={{ duration: 0.3 }}
                   />
                   <motion.div 
-                    className={`absolute w-[1px] bg-gradient-to-b from-transparent via-blue-500/50 to-transparent
+                    className={`absolute w-[1px] bg-gradient-to-b from-transparent ${service.accentLight} ${service.accentDark} to-transparent
                       ${index % 2 === 0 ? 'right-0 h-2/3' : 'left-0 h-2/3'}
                     `}
                     initial={{ scaleY: 0 }}
