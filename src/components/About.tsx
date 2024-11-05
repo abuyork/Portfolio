@@ -106,7 +106,7 @@ const About = () => {
     <motion.section 
       id="about" 
       ref={containerRef}
-      className="relative h-[calc(100vh+4rem)] -mt-16 pt-16 flex items-start justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
+      className="relative h-[calc(100vh+4rem)] -mt-16 pt-16 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
       style={{
         transformStyle: 'preserve-3d',
         perspective: '2000px',
@@ -145,9 +145,9 @@ const About = () => {
         />
       </div>
 
-      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-6 mt-24">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-6">
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-8"
           style={parallaxStyle(0.4)}
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -172,57 +172,88 @@ const About = () => {
           />
         </motion.div>
 
-        <div className="grid lg:grid-cols-[1fr,1.5fr] gap-6 items-start">
+        <div className="grid lg:grid-cols-[1fr,1.5fr] gap-8 items-start h-full">
           <motion.div 
-            className="space-y-4"
+            className="space-y-6 h-full flex flex-col justify-between"
             style={parallaxStyle(0.2)}
           >
             <motion.p
-              className="text-sm sm:text-base text-gray-300 leading-relaxed backdrop-blur-sm bg-white/5 p-4 rounded-xl border border-white/10"
+              className="text-sm sm:text-base text-gray-300 leading-relaxed backdrop-blur-sm 
+                bg-white/5 p-6 rounded-xl border border-white/10"
               whileHover={{
                 scale: 1.02,
                 backgroundColor: "rgba(255, 255, 255, 0.08)",
                 transition: { duration: 0.3 }
               }}
             >
-              I specialize in building full-stack web applications using modern technologies and 
-              best practices. My approach combines technical expertise with creative problem-solving 
-              to deliver solutions that not only work flawlessly but also provide an excellent user 
-              experience.
+              <span className="block mb-4">
+                I specialize in building <span className="text-blue-400 font-medium">full-stack web applications</span> using 
+                modern technologies and best practices.
+              </span>
+              
+              <span className="block text-gray-400 mb-3">
+                My expertise includes:
+              </span>
+              
+              <ul className="list-disc list-inside space-y-3 text-gray-300 ml-2">
+                <li>Modern frontend frameworks & responsive design</li>
+                <li>Scalable backend architecture & API development</li>
+                <li>User experience optimization & performance</li>
+                <li>Creative problem-solving & technical innovation</li>
+              </ul>
             </motion.p>
 
             <motion.div 
-              className="flex gap-3"
+              className="flex gap-4"
               variants={textVariants}
               custom={3}
             >
               <motion.a 
                 href="#contact" 
-                className="group relative inline-flex items-center px-4 py-1.5 overflow-hidden rounded-lg text-xs sm:text-sm"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="group relative inline-flex items-center px-6 py-2.5 overflow-hidden rounded-xl text-sm font-medium"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg opacity-80 group-hover:opacity-100 transition-opacity" />
-                <span className="relative z-10 font-medium text-white">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-xl opacity-90 
+                  group-hover:opacity-100 transition-all duration-300 group-hover:scale-110 animate-gradient-xy" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 rounded-xl blur-sm 
+                  group-hover:blur-md transition-all duration-300" 
+                />
+                <span className="relative z-10 text-white group-hover:text-blue-100 transition-colors duration-300">
                   Get in Touch
                 </span>
+                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-xl blur-xl 
+                  opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse" 
+                />
               </motion.a>
 
               <motion.a 
                 href="#projects" 
-                className="group relative inline-flex items-center px-4 py-1.5 overflow-hidden rounded-lg border border-blue-500/30 text-xs sm:text-sm"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="group relative inline-flex items-center px-6 py-2.5 overflow-hidden rounded-xl text-sm font-medium
+                  border border-blue-500/30 hover:border-blue-400/50 transition-colors duration-300"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <span className="relative z-10 text-blue-500 font-medium group-hover:text-blue-400 transition-colors">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl opacity-0 
+                  group-hover:opacity-100 transition-all duration-300" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-indigo-400/5 rounded-xl blur-sm 
+                  group-hover:blur-md transition-all duration-300" 
+                />
+                <span className="relative z-10 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent 
+                  group-hover:from-blue-300 group-hover:to-indigo-300 transition-all duration-300">
                   View Projects
                 </span>
+                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-400/10 to-indigo-400/10 rounded-xl blur-xl 
+                  opacity-0 group-hover:opacity-100 transition-all duration-300" 
+                />
               </motion.a>
             </motion.div>
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-2 gap-4 relative"
+            className="grid grid-cols-2 gap-4 relative h-full"
             style={parallaxStyle(0.3)}
           >
             {services.map((service, index) => (
@@ -274,8 +305,9 @@ const About = () => {
 
                   {/* Description with custom border */}
                   <p className={`text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors
-                    relative pl-3 border-l border-white/10 group-hover:border-blue-500/30
-                    ${index === 0 ? 'text-sm md:max-w-[60%]' : 'text-xs'}
+                    relative pl-4 border-l border-white/10 group-hover:border-blue-500/30
+                    ${index === 0 ? 'text-sm md:max-w-[60%] leading-6' : 'text-xs leading-5'}
+                    tracking-wide
                   `}>
                     {service.description}
                   </p>

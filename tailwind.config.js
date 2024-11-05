@@ -10,6 +10,7 @@ module.exports = {
         'slide-up': 'slide-up 0.5s ease-out forwards',
         'scroll': 'scroll 2s ease-in-out infinite',
         'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'gradient-xy': 'gradient-xy 3s ease infinite',
       },
       keyframes: {
         'fade-in': {
@@ -30,6 +31,16 @@ module.exports = {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(3px)' },
         },
+        'gradient-xy': {
+          '0%, 100%': {
+            'background-size': '400% 400%',
+            'background-position': 'left center'
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center'
+          }
+        }
       },
     },
   },
