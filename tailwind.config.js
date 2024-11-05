@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'supreme': ['Supreme', 'sans-serif'],
+      },
       animation: {
         'fade-in': 'fade-in 1s ease-out forwards',
         'slide-up': 'slide-up 0.5s ease-out forwards',

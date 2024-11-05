@@ -41,7 +41,9 @@ const Experience = () => {
     <section id="experience" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 opacity-0 animate-slide-up">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Experience</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4 font-['Space_Grotesk'] bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500">
+            Experience
+          </h2>
           <div className="w-16 h-1 bg-blue-500 mx-auto"></div>
         </div>
 

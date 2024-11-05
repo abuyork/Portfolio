@@ -148,7 +148,7 @@ const About = () => {
           transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
         >
           <motion.h2 
-            className="text-3xl sm:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500"
+            className="text-3xl sm:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 font-['Space_Grotesk'] tracking-tight"
             whileHover={{
               backgroundSize: "200% 200%",
               transition: { duration: 1 }
