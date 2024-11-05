@@ -224,13 +224,25 @@ const About = () => {
                   ${index === 1 ? 'rounded-[1rem_2rem_1rem_2rem] translate-x-2 z-[2]' : ''}
                   ${index === 2 ? 'rounded-[2rem_1rem_1rem_2rem] -translate-x-2 z-[2]' : ''}
                   ${index === 3 ? 'rounded-[1rem_2rem_2rem_1rem] col-span-2 translate-y-2 z-[1]' : ''}
+                  transition-all duration-500 ease-out
+                  hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)]
+                  dark:hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]
                 `}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ 
+                  boxShadow: "0 0px 0px rgba(8, 112, 184, 0)",
+                  y: 0
+                }}
+                whileInView={{
+                  boxShadow: "0 10px 30px rgba(8, 112, 184, 0.1)",
+                  y: -5
+                }}
+                viewport={{ once: false, margin: "-100px" }}
                 whileHover={{ 
                   scale: 1.03,
                   backgroundColor: "rgba(26, 31, 46, 0.5)",
                   zIndex: 10,
+                  boxShadow: "0 20px 50px rgba(8, 112, 184, 0.2)",
+                  y: -10
                 }}
                 transition={{
                   duration: 0.3,
@@ -306,14 +318,28 @@ const About = () => {
           {/* Tech stack card */}
           <motion.div
             className="col-span-full mt-8 relative overflow-hidden backdrop-blur-sm bg-[#1a1f2e]/30 
-              border border-blue-500/10 hover:border-blue-500/20 rounded-2xl py-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+              border border-blue-500/10 hover:border-blue-500/20 rounded-2xl py-8
+              transition-all duration-500 ease-out
+              hover:shadow-[0_20px_50px_rgba(59,_130,_246,_0.5)]
+              dark:hover:shadow-[0_20px_50px_rgba(59,_130,_246,_0.2)]"
+            initial={{ 
+              boxShadow: "0 0px 0px rgba(59, 130, 246, 0)",
+              y: 0
+            }}
+            whileInView={{ 
+              boxShadow: "0 10px 30px rgba(59, 130, 246, 0.08)",
+              y: -5
+            }}
+            viewport={{ once: false, margin: "-50px" }}
             whileHover={{ 
               backgroundColor: "rgba(26, 31, 46, 0.5)",
               zIndex: 10,
+              boxShadow: "0 20px 50px rgba(59, 130, 246, 0.2)",
+              y: -10
             }}
-            transition={{ duration: 0.3 }}
+            transition={{ 
+              duration: 0.3
+            }}
             style={parallaxStyle(0.2)}
           >
             <div className="absolute inset-0 opacity-0 hover:opacity-10 transition-opacity duration-300">
@@ -342,9 +368,22 @@ const About = () => {
                 <motion.div
                   key={tooltip}
                   className="group relative flex flex-col items-center"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  initial={{ 
+                    y: 0,
+                    filter: "drop-shadow(0 0 0 rgba(0, 0, 0, 0))"
+                  }}
+                  whileInView={{ 
+                    y: -2,
+                    filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))"
+                  }}
+                  whileHover={{
+                    y: -4,
+                    filter: "drop-shadow(0 8px 12px rgba(0, 0, 0, 0.2))"
+                  }}
+                  transition={{ 
+                    delay: index * 0.1,
+                    duration: 0.3
+                  }}
                 >
                   <Icon className={`w-7 h-7 ${color} opacity-70 
                     transition-all duration-300
