@@ -7,11 +7,13 @@ import Projects from './components/Projects';
 import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
 import CustomCursor from './components/common/CustomCursor';
+import { ChevronUp } from 'lucide-react';
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const observerOptions = {
@@ -34,12 +36,16 @@ function App() {
       observer.observe(element);
     });
 
-    // Add scroll progress handler
+    // Modified scroll handler
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const currentScrollY = window.scrollY;
       const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = Math.min(1, scrollPosition / windowHeight);
+      const progress = Math.min(1, currentScrollY / windowHeight);
       setScrollProgress(progress);
+
+      // Show navbar only when at the very top
+      setShowNavbar(currentScrollY < 50);
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -84,7 +90,21 @@ function App() {
         />
 
         <div className="relative z-10">
-          <Navbar />
+          {/* Conditionally render Navbar */}
+          {showNavbar && <Navbar />}
+          
+          {/* Single scroll-to-top button */}
+          {!showNavbar && (
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="fixed bottom-8 right-8 z-50 p-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg hover:scale-110 transition-all duration-300 group"
+            >
+              <ChevronUp className="w-6 h-6" />
+              <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-blue-800/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" />
+            </button>
+          )}
+
           <main className="overflow-hidden">
             <Hero />
             <About />
@@ -94,7 +114,6 @@ function App() {
             <Contact />
           </main>
           <Footer />
-          <ScrollToTop />
         </div>
       </div>
     </>

@@ -86,12 +86,11 @@ const About = () => {
     })
   };
 
-
   return (
     <motion.section 
       id="about" 
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d rounded-[20px]"
+      className="relative h-[calc(100vh+4rem)] -mt-16 pt-16 flex items-start justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
       style={{
         transformStyle: 'preserve-3d',
         perspective: '2000px',
@@ -130,7 +129,7 @@ const About = () => {
         />
       </div>
 
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-20">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-6 mt-24">
         <motion.div 
           className="text-center mb-16"
           style={parallaxStyle(0.4)}
@@ -140,7 +139,7 @@ const About = () => {
           transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
         >
           <motion.h2 
-            className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500"
+            className="text-3xl sm:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500"
             whileHover={{
               backgroundSize: "200% 200%",
               transition: { duration: 1 }
@@ -149,21 +148,21 @@ const About = () => {
             About Me
           </motion.h2>
           <motion.div 
-            className="w-16 h-1 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full"
+            className="w-24 h-1 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full"
             whileInView={{
-              width: ["0%", "4rem"],
+              width: ["0%", "6rem"],
               transition: { duration: 0.8, ease: "easeOut" }
             }}
           />
         </motion.div>
 
-        <div className="grid lg:grid-cols-[1fr,1.5fr] gap-16 items-start">
+        <div className="grid lg:grid-cols-[1fr,1.5fr] gap-6 items-start">
           <motion.div 
-            className="space-y-8"
+            className="space-y-4"
             style={parallaxStyle(0.2)}
           >
             <motion.p
-              className="text-lg text-gray-300 leading-relaxed backdrop-blur-sm bg-white/5 p-8 rounded-xl border border-white/10"
+              className="text-sm sm:text-base text-gray-300 leading-relaxed backdrop-blur-sm bg-white/5 p-4 rounded-xl border border-white/10"
               whileHover={{
                 scale: 1.02,
                 backgroundColor: "rgba(255, 255, 255, 0.08)",
@@ -177,102 +176,120 @@ const About = () => {
             </motion.p>
 
             <motion.div 
-              className="flex gap-6"
+              className="flex gap-3"
               variants={textVariants}
               custom={3}
             >
               <motion.a 
                 href="#contact" 
-                className="group relative inline-flex items-center px-8 py-3 overflow-hidden rounded-lg"
+                className="group relative inline-flex items-center px-4 py-1.5 overflow-hidden rounded-lg text-xs sm:text-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg opacity-80 group-hover:opacity-100 transition-opacity" />
-                
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity" />
-                
-                <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-40 transition-opacity duration-500 blur-xl bg-blue-500" />
-                
                 <span className="relative z-10 font-medium text-white">
                   Get in Touch
                 </span>
-                
-                <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
               </motion.a>
 
               <motion.a 
                 href="#projects" 
-                className="group relative inline-flex items-center px-8 py-3 overflow-hidden rounded-lg border border-blue-500/30"
+                className="group relative inline-flex items-center px-4 py-1.5 overflow-hidden rounded-lg border border-blue-500/30 text-xs sm:text-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-colors duration-300 rounded-lg" />
-                
-                <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-40 transition-opacity duration-500 blur-xl bg-blue-500/20" />
-                
                 <span className="relative z-10 text-blue-500 font-medium group-hover:text-blue-400 transition-colors">
                   View Projects
                 </span>
-                
-                <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               </motion.a>
             </motion.div>
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-2 gap-6 preserve-3d"
+            className="grid grid-cols-2 gap-4 relative"
             style={parallaxStyle(0.3)}
           >
             {services.map((service, index) => (
               <motion.div 
                 key={index}
-                className="group relative p-6 backdrop-blur-sm bg-[#1a1f2e]/50 rounded-xl border border-white/5"
-                initial={{ opacity: 0, y: 20, rotateX: -30 }}
-                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                className={`group relative overflow-hidden backdrop-blur-sm bg-[#1a1f2e]/30 border border-white/5
+                  ${index === 0 ? 'rounded-[2rem_1rem_2rem_1rem] translate-y-4 translate-x-4 z-[2]' : ''}
+                  ${index === 1 ? 'rounded-[1rem_2rem_1rem_2rem] mt-12 -translate-x-4 z-[1]' : ''}
+                  ${index === 2 ? 'rounded-[2rem_1rem_1rem_2rem] -mt-8 translate-x-6 z-[3]' : ''}
+                  ${index === 3 ? 'rounded-[1rem_2rem_2rem_1rem] translate-y-4 -translate-x-6 z-[4]' : ''}
+                `}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 whileHover={{ 
-                  scale: 1.05,
-                  rotateY: 5,
-                  backgroundColor: "rgba(26, 31, 46, 0.8)",
+                  scale: 1.03,
+                  backgroundColor: "rgba(26, 31, 46, 0.5)",
+                  zIndex: 10,
                 }}
                 transition={{
-                  duration: 0.4,
+                  duration: 0.3,
                   delay: index * 0.1,
-                  ease: [0.215, 0.61, 0.355, 1]
                 }}
               >
-                <motion.div
-                  className="absolute -inset-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100"
-                  initial={{ boxShadow: "none" }}
-                  whileHover={{
-                    boxShadow: `
-                      0 0 20px 2px rgba(255, 255, 255, 0.1),
-                      inset 0 0 20px 2px rgba(255, 255, 255, 0.1)
-                    `
-                  }}
-                  transition={{ duration: 0.3 }}
-                />
-                
-                <motion.div
-                  className="absolute -inset-2 rounded-xl opacity-0 group-hover:opacity-100"
-                  initial={{ boxShadow: "none" }}
-                  whileHover={{
-                    boxShadow: `
-                      10px 10px 20px rgba(0, 0, 0, 0.2),
-                      -10px -10px 20px rgba(255, 255, 255, 0.05)
-                    `
-                  }}
-                  transition={{ duration: 0.3 }}
-                />
-
-                <div className={`relative z-10 w-14 h-14 rounded-xl bg-gradient-to-br ${service.gradientFrom} ${service.gradientTo} p-3 mb-4`}>
-                  <service.icon className="w-full h-full text-white" />
+                {/* Abstract background shapes */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+                  <div className={`absolute w-full h-full bg-gradient-to-br ${service.gradientFrom} ${service.gradientTo}`} />
+                  <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay" />
+                  <div className={`absolute -top-1/2 -right-1/2 w-full h-full rounded-full bg-gradient-to-br ${service.gradientFrom} ${service.gradientTo} blur-3xl opacity-20 transform rotate-12`} />
                 </div>
-                <h3 className="relative z-10 text-xl font-semibold mb-3 text-white">
-                  {service.title}
-                </h3>
-                <p className="relative z-10 text-gray-400 text-base leading-relaxed">
-                  {service.description}
-                </p>
+
+                {/* Content container with asymmetric padding */}
+                <div className={`relative p-5 flex flex-col h-full
+                  ${index === 0 ? 'pl-6' : ''}
+                  ${index === 1 ? 'pr-6' : ''}
+                  ${index === 2 ? 'pl-6' : ''}
+                  ${index === 3 ? 'pr-6' : ''}
+                `}>
+                  {/* Icon and title with dynamic positioning */}
+                  <div className={`flex items-center space-x-3 mb-3
+                    ${index % 2 === 0 ? 'justify-start' : 'justify-end flex-row-reverse space-x-reverse'}
+                  `}>
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br ${service.gradientFrom} ${service.gradientTo} p-1.5 
+                      opacity-80 group-hover:opacity-100 transition-opacity transform group-hover:rotate-12 duration-300`}>
+                      <service.icon className="w-full h-full text-white" />
+                    </div>
+                    <h3 className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
+                      {service.title}
+                    </h3>
+                  </div>
+
+                  {/* Description with custom border */}
+                  <p className="text-xs text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors
+                    relative pl-3 border-l border-white/10 group-hover:border-blue-500/30">
+                    {service.description}
+                  </p>
+
+                  {/* Animated accent lines */}
+                  <motion.div 
+                    className={`absolute h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent
+                      ${index % 2 === 0 ? 'left-0 bottom-0 w-2/3' : 'right-0 bottom-0 w-2/3'}
+                    `}
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  <motion.div 
+                    className={`absolute w-[1px] bg-gradient-to-b from-transparent via-blue-500/50 to-transparent
+                      ${index % 2 === 0 ? 'right-0 h-2/3' : 'left-0 h-2/3'}
+                    `}
+                    initial={{ scaleY: 0 }}
+                    whileHover={{ scaleY: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </div>
+
+                {/* Floating accent elements */}
+                <div className={`absolute w-16 h-16 bg-gradient-to-br from-blue-500/10 to-purple-500/10 blur-xl
+                  opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform rotate-45
+                  ${index === 0 ? '-top-8 -right-8' : ''}
+                  ${index === 1 ? '-bottom-8 -left-8' : ''}
+                  ${index === 2 ? '-bottom-8 -right-8' : ''}
+                  ${index === 3 ? '-top-8 -left-8' : ''}
+                `} />
               </motion.div>
             ))}
           </motion.div>
