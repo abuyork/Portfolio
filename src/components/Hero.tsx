@@ -54,6 +54,7 @@ const Hero = () => {
     `,
     transformOrigin: 'center center',
     transition: 'transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1)',
+    borderRadius: `${scrollProgress * 100}px`,
   };
 
   const parallaxStyle = (depth: number) => ({
@@ -68,8 +69,12 @@ const Hero = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
-      style={containerStyle}
+      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d rounded-[20px]"
+      style={{
+        ...containerStyle,
+        transformStyle: 'preserve-3d',
+        boxShadow: `0 ${scrollProgress * 50}px ${scrollProgress * 100}px rgba(0,0,0,0.3)`,
+      }}
     >
       <AuthAnimatedBackground />
       
