@@ -172,27 +172,42 @@ const About = () => {
           >
             <motion.p
               className="text-sm sm:text-base text-gray-300 leading-relaxed backdrop-blur-sm 
-                bg-white/5 p-6 rounded-xl border border-white/10"
+                bg-white/[0.03] hover:bg-white/[0.05]
+                p-6 rounded-2xl border border-white/10
+                transition-colors duration-300"
               whileHover={{
                 scale: 1.02,
-                backgroundColor: "rgba(255, 255, 255, 0.08)",
                 transition: { duration: 0.3 }
               }}
             >
-              <span className="block mb-4">
-                I specialize in building <span className="text-blue-400 font-medium">full-stack web applications</span> using 
+              <span className="block mb-4 text-base sm:text-lg font-light">
+                I specialize in building <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-medium">full-stack web applications</span> using 
                 modern technologies and best practices.
               </span>
               
-              <span className="block text-gray-400 mb-3">
+              <span className="block text-gray-400 mb-3 font-medium tracking-wide">
                 My expertise includes:
               </span>
               
-              <ul className="list-disc list-inside space-y-3 text-gray-300 ml-2">
-                <li>Modern frontend frameworks & responsive design</li>
-                <li>Scalable backend architecture & API development</li>
-                <li>User experience optimization & performance</li>
-                <li>Creative problem-solving & technical innovation</li>
+              <ul className="list-none space-y-3 text-gray-300">
+                {[
+                  "Modern frontend frameworks & responsive design",
+                  "Scalable backend architecture & API development",
+                  "User experience optimization & performance",
+                  "Creative problem-solving & technical innovation"
+                ].map((item, index) => (
+                  <motion.li 
+                    key={index}
+                    className="flex items-center space-x-3 group"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-500/50 group-hover:bg-blue-400 
+                      group-hover:w-3 transition-all duration-300" />
+                    <span>{item}</span>
+                  </motion.li>
+                ))}
               </ul>
             </motion.p>
           </motion.div>
@@ -291,7 +306,7 @@ const About = () => {
           {/* Tech stack card */}
           <motion.div
             className="col-span-full mt-8 relative overflow-hidden backdrop-blur-sm bg-[#1a1f2e]/30 
-              border border-blue-500/10 hover:border-blue-500/20 rounded-2xl py-6"
+              border border-blue-500/10 hover:border-blue-500/20 rounded-2xl py-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             whileHover={{ 
@@ -308,7 +323,7 @@ const About = () => {
                 bg-gradient-to-br from-blue-400/20 to-purple-600/20 blur-3xl opacity-20 transform rotate-12" />
             </div>
 
-            <div className="flex items-center justify-between px-12">
+            <div className="flex items-center justify-between px-12 relative">
               {[
                 { Icon: SiReact, color: 'text-[#61DAFB]', tooltip: 'React' },
                 { Icon: SiJavascript, color: 'text-[#F7DF1E]', tooltip: 'JavaScript' },
@@ -326,27 +341,19 @@ const About = () => {
               ].map(({ Icon, color, tooltip }, index) => (
                 <motion.div
                   key={tooltip}
-                  className="group relative"
+                  className="group relative flex flex-col items-center"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
                   <Icon className={`w-7 h-7 ${color} opacity-70 hover:opacity-100 transition-opacity`} />
-                  <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-gray-400 
+                  <span className="absolute top-full mt-2 text-xs text-gray-400 
                     opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                     {tooltip}
                   </span>
                 </motion.div>
               ))}
             </div>
-
-            <motion.div 
-              className="absolute h-[1px] left-0 bottom-0 w-2/3 bg-gradient-to-r from-transparent 
-                via-blue-400 to-transparent"
-              initial={{ scaleX: 0 }}
-              whileHover={{ scaleX: 1 }}
-              transition={{ duration: 0.3 }}
-            />
           </motion.div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CustomCursor from './components/common/CustomCursor';
-import { ChevronUp } from 'lucide-react';
+import { ChevronsUp } from 'lucide-react';
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -92,15 +92,17 @@ function App() {
           {/* Conditionally render Navbar */}
           {showNavbar && <Navbar />}
           
-          {/* Single scroll-to-top button */}
+          {/* Updated scroll-to-top button with premium icon */}
           {!showNavbar && (
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="fixed bottom-8 right-8 z-50 p-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg hover:scale-110 transition-all duration-300 group"
+              className={`fixed bottom-4 right-4 z-50 p-2 rounded-full transition-all duration-300 border-4 border-purple-800 ${
+                scrollProgress > 0.5 
+                  ? 'bg-white text-black hover:bg-gray-200' 
+                  : 'bg-black text-white hover:bg-gray-800'
+              }`}
             >
-              <ChevronUp className="w-6 h-6" />
-              <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-blue-800/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" />
+              <ChevronsUp className="w-4 h-4" />
             </button>
           )}
 
