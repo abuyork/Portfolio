@@ -70,9 +70,9 @@ const Projects = () => {
     <section 
       ref={containerRef}
       id="projects" 
-      className="relative min-h-screen py-32 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white overflow-hidden"
+      className="relative min-h-screen py-32 bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden"
     >
-      {/* Enhanced floating orbs with parallax - copied from Hero */}
+      {/* Enhanced floating orbs with parallax - updated colors to match Hero */}
       <div className="absolute inset-0 overflow-hidden preserve-3d">
         <motion.div 
           className="absolute top-20 left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"
@@ -152,7 +152,7 @@ const Projects = () => {
           />
         </motion.div>
 
-        {/* Project cards grid remains the same */}
+        {/* Project cards grid - update card background */}
         <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {projects.map((project, index) => {
             const cardRef = useRef(null);
