@@ -4,21 +4,18 @@ import {
   ListTodo, // For Task Management
   Cloud // For Weather Dashboard
 } from 'lucide-react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useMotionValue, useSpring } from 'framer-motion';
 import { fadeIn, slideInFromBottom } from '../utils/animations';
 import { useRef } from 'react';
 
 const Projects = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
+  useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
   // Create animated values based on scroll position
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 1, 0.5]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
 
   const projects = [
     {
@@ -54,38 +51,12 @@ const Projects = () => {
     <section 
       ref={containerRef}
       id="projects" 
-      className="relative min-h-screen py-32 bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden"
+      className="relative min-h-screen py-32 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white overflow-hidden"
     >
-      {/* Animated Background Elements */}
-      <motion.div 
-        className="absolute inset-0 bg-grid-white/[0.05] bg-[length:60px_60px]"
-        style={{ y: backgroundY }}
-      />
-      <motion.div 
-        className="absolute inset-0"
-        style={{ 
-          background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15), transparent 70%)',
-          scale,
-          opacity 
-        }}
-      />
-      <motion.div 
-        className="absolute inset-0"
-        style={{ 
-          background: 'radial-gradient(circle at 70% 30%, rgba(147, 51, 234, 0.15), transparent 70%)',
-          scale: useTransform(scrollYProgress, [0, 1], [1.2, 0.8]),
-          opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.7, 0.3])
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/0 via-gray-900/50 to-gray-900/0" />
-
-      {/* Floating Elements */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ scale: useTransform(scrollYProgress, [0, 1], [1, 1.2]) }}
-      >
+      {/* Enhanced floating orbs with parallax - copied from Hero */}
+      <div className="absolute inset-0 overflow-hidden preserve-3d">
         <motion.div 
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"
           animate={{
             y: [0, 50, 0],
             opacity: [0.3, 0.5, 0.3],
@@ -97,7 +68,7 @@ const Projects = () => {
           }}
         />
         <motion.div 
-          className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-700"
           animate={{
             y: [50, 0, 50],
             opacity: [0.3, 0.5, 0.3],
@@ -108,9 +79,33 @@ const Projects = () => {
             ease: "linear"
           }}
         />
-      </motion.div>
+        <motion.div 
+          className="absolute top-1/3 right-1/4 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"
+          animate={{
+            y: [0, 30, 0],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-1/3 left-1/4 w-48 h-48 bg-pink-500/10 rounded-full blur-2xl"
+          animate={{
+            y: [30, 0, 30],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+      </div>
 
-      {/* Content Container */}
+      {/* Updated heading section with Hero-like styling */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <motion.div 
           variants={fadeIn('up')}
@@ -120,7 +115,7 @@ const Projects = () => {
           className="text-center mb-20"
         >
           <motion.h2 
-            className="text-3xl sm:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 font-['Space_Grotesk'] tracking-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 font-['Space_Grotesk'] tracking-tight"
             whileHover={{
               backgroundSize: "200% 200%",
               transition: { duration: 1 }
@@ -128,8 +123,9 @@ const Projects = () => {
           >
             Projects
           </motion.h2>
+          {/* Added gradient underline with animation */}
           <motion.div 
-            className="w-24 h-1 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full"
+            className="w-24 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 mx-auto rounded-full"
             whileInView={{
               width: ["0%", "6rem"],
               transition: { duration: 0.8, ease: "easeOut" }
@@ -137,6 +133,7 @@ const Projects = () => {
           />
         </motion.div>
 
+        {/* Project cards grid remains the same */}
         <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {projects.map((project, index) => {
             const cardRef = useRef(null);
@@ -207,7 +204,7 @@ const Projects = () => {
                   after:absolute after:inset-0 after:z-10 
                   after:bg-gradient-to-t after:from-gray-900/40 
                   after:to-gray-900/0
-                  bg-gradient-to-br from-gray-800/50 via-gray-800/30 to-gray-900/50
+                  bg-gradient-to-br from-gray-700/50 via-gray-800/30 to-gray-800/50
                   backdrop-blur-[6px] backdrop-saturate-150
                   border border-white/5 hover:border-white/10
                   shadow-[0_8px_40px_rgba(0,0,0,0.25)]
@@ -308,7 +305,7 @@ const Projects = () => {
 
                 {/* Content section with parallax */}
                 <motion.div 
-                  className="relative z-20 p-6 bg-gradient-to-b from-gray-800/50 to-gray-900/50 backdrop-blur-sm"
+                  className="relative z-20 p-6 bg-gradient-to-b from-gray-700/50 to-gray-800/50 backdrop-blur-sm"
                   style={{
                     transform: "translateZ(50px)",
                     transformStyle: "preserve-3d",
@@ -337,15 +334,16 @@ const Projects = () => {
                           scale: 1.05,
                           y: -2
                         }}
-                        className="px-3 py-1 bg-white/5 text-gray-300 rounded-full text-sm font-medium 
+                        className="px-3 py-1 text-sm font-medium rounded-full
                           relative overflow-hidden group/badge
+                          bg-white/5 text-gray-300
                           border border-white/5
                           hover:bg-blue-500/10 hover:text-blue-400 hover:border-blue-500/20
                           transition-all duration-200
                           shadow-[0_2px_10px_rgba(0,0,0,0.1)]
                           hover:shadow-[0_2px_15px_rgba(59,130,246,0.2)]"
                       >
-                        {/* Glow effect */}
+                        {/* Gradient glow effect */}
                         <span className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/30 to-purple-500/0 
                           opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300
                           blur-md -z-10" 
@@ -378,11 +376,6 @@ const Projects = () => {
               </motion.div>
             );
           })}
-        </div>
-
-        {/* Optional: Add connecting lines between cards */}
-        <div className="absolute inset-0 pointer-events-none hidden md:block">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_1px)] bg-[length:40px_40px]" />
         </div>
       </div>
     </section>
