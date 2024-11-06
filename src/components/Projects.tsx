@@ -7,6 +7,11 @@ import {
 import { motion, useScroll, useMotionValue, useSpring } from 'framer-motion';
 import { fadeIn, slideInFromBottom } from '../utils/animations';
 import { useRef } from 'react';
+import { 
+  ReactIcon, NodeIcon, MongoDbIcon, StripeIcon,
+  NextJsIcon, TypeScriptIcon, PostgreSqlIcon, SocketIoIcon,
+  OpenWeatherIcon
+} from '../utils/TechIcons';
 
 const Projects = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,7 +28,12 @@ const Projects = () => {
       icon: ShoppingCart,
       description: 'A full-featured e-commerce platform built with React, Node.js, and MongoDB. Includes user authentication, product management, and payment integration.',
       image: 'https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+      technologies: [
+        { icon: ReactIcon, name: 'React' },
+        { icon: NodeIcon, name: 'Node.js' },
+        { icon: MongoDbIcon, name: 'MongoDB' },
+        { icon: StripeIcon, name: 'Stripe' }
+      ],
       github: 'https://github.com',
       demo: 'https://demo.com',
     },
@@ -32,7 +42,12 @@ const Projects = () => {
       icon: ListTodo,
       description: 'A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
       image: 'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      technologies: ['Next.js', 'TypeScript', 'PostgreSQL', 'Socket.io'],
+      technologies: [
+        { icon: NextJsIcon, name: 'Next.js' },
+        { icon: TypeScriptIcon, name: 'TypeScript' },
+        { icon: PostgreSqlIcon, name: 'PostgreSQL' },
+        { icon: SocketIoIcon, name: 'Socket.io' }
+      ],
       github: 'https://github.com',
       demo: 'https://demo.com',
     },
@@ -41,7 +56,11 @@ const Projects = () => {
       icon: Cloud,
       description: 'A weather dashboard that displays current weather conditions and forecasts for multiple locations using weather API integration.',
       image: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      technologies: ['React', 'TypeScript', 'OpenWeather API'],
+      technologies: [
+        { icon: ReactIcon, name: 'React' },
+        { icon: TypeScriptIcon, name: 'TypeScript' },
+        { icon: OpenWeatherIcon, name: 'Weather API' }
+      ],
       github: 'https://github.com',
       demo: 'https://demo.com',
     },
@@ -326,37 +345,36 @@ const Projects = () => {
                   <p className="text-gray-300 mb-4 line-clamp-3 group-hover:text-gray-200 transition-colors duration-200">
                     {project.description}
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap items-center justify-center gap-4 mt-4">
                     {project.technologies.map((tech, techIndex) => (
-                      <motion.span
+                      <motion.div
                         key={techIndex}
                         whileHover={{ 
-                          scale: 1.05,
+                          scale: 1.1,
                           y: -2
                         }}
-                        className="px-3 py-1 text-sm font-medium rounded-full
-                          relative overflow-hidden group/badge
-                          bg-white/5 text-gray-300
-                          border border-white/5
-                          hover:bg-blue-500/10 hover:text-blue-400 hover:border-blue-500/20
-                          transition-all duration-200
-                          shadow-[0_2px_10px_rgba(0,0,0,0.1)]
-                          hover:shadow-[0_2px_15px_rgba(59,130,246,0.2)]"
+                        className="relative group/tech"
                       >
-                        {/* Gradient glow effect */}
-                        <span className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/30 to-purple-500/0 
-                          opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300
-                          blur-md -z-10" 
-                        />
+                        <div className="w-6 h-6 rounded-lg bg-white/5 p-1
+                          hover:bg-blue-500/10 transition-all duration-200
+                          border border-white/5 hover:border-blue-500/20
+                          shadow-[0_2px_10px_rgba(0,0,0,0.1)]
+                          hover:shadow-[0_2px_15px_rgba(59,130,246,0.2)]
+                          flex items-center justify-center"
+                        >
+                          <tech.icon className="w-full h-full text-gray-300 group-hover/tech:text-blue-400
+                            transition-colors duration-200" />
+                        </div>
                         
-                        {/* Shimmer effect */}
-                        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
-                          translate-x-[-100%] group-hover/badge:translate-x-[100%] transition-transform duration-1000
-                          -z-10" 
-                        />
-                        
-                        {tech}
-                      </motion.span>
+                        {/* Tooltip */}
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 
+                          bg-gray-900 text-white text-xs rounded-md opacity-0 
+                          group-hover/tech:opacity-100 transition-opacity duration-200
+                          pointer-events-none whitespace-nowrap"
+                        >
+                          {tech.name}
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
                 </motion.div>
