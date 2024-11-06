@@ -13,7 +13,8 @@ module.exports = {
         'slide-up': 'slide-up 0.5s ease-out forwards',
         'scroll': 'scroll 2s ease-in-out infinite',
         'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'gradient-xy': 'gradient-xy 3s ease infinite',
+        'gradient-xy': 'gradient-xy 15s ease infinite',
+        'shimmer': 'shimmer 2s linear infinite',
       },
       keyframes: {
         'fade-in': {
@@ -43,7 +44,10 @@ module.exports = {
             'background-size': '200% 200%',
             'background-position': 'right center'
           }
-        }
+        },
+        'shimmer': {
+          '100%': { transform: 'translateX(100%) skewX(-12deg)' },
+        },
       },
     },
   },

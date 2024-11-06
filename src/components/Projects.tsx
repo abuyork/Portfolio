@@ -1,18 +1,29 @@
-import { Github, ExternalLink, ArrowRight } from 'lucide-react';
-import { motion, useScroll } from 'framer-motion';
-import { fadeIn, slideIn } from '../utils/animations';
+import { 
+  Github, ExternalLink, ArrowRight, 
+  ShoppingCart, // For E-commerce
+  ListTodo, // For Task Management
+  Cloud // For Weather Dashboard
+} from 'lucide-react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { fadeIn, slideInFromBottom } from '../utils/animations';
 import { useRef } from 'react';
 
 const Projects = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  useScroll({
+  const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
+  // Create animated values based on scroll position
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 1, 0.5]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+
   const projects = [
     {
       title: 'E-Commerce Platform',
+      icon: ShoppingCart,
       description: 'A full-featured e-commerce platform built with React, Node.js, and MongoDB. Includes user authentication, product management, and payment integration.',
       image: 'https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
@@ -21,6 +32,7 @@ const Projects = () => {
     },
     {
       title: 'Task Management App',
+      icon: ListTodo,
       description: 'A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
       image: 'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       technologies: ['Next.js', 'TypeScript', 'PostgreSQL', 'Socket.io'],
@@ -29,6 +41,7 @@ const Projects = () => {
     },
     {
       title: 'Weather Dashboard',
+      icon: Cloud,
       description: 'A weather dashboard that displays current weather conditions and forecasts for multiple locations using weather API integration.',
       image: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       technologies: ['React', 'TypeScript', 'OpenWeather API'],
@@ -43,11 +56,61 @@ const Projects = () => {
       id="projects" 
       className="relative min-h-screen py-32 bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:60px_60px]" />
+      {/* Animated Background Elements */}
+      <motion.div 
+        className="absolute inset-0 bg-grid-white/[0.05] bg-[length:60px_60px]"
+        style={{ y: backgroundY }}
+      />
+      <motion.div 
+        className="absolute inset-0"
+        style={{ 
+          background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15), transparent 70%)',
+          scale,
+          opacity 
+        }}
+      />
+      <motion.div 
+        className="absolute inset-0"
+        style={{ 
+          background: 'radial-gradient(circle at 70% 30%, rgba(147, 51, 234, 0.15), transparent 70%)',
+          scale: useTransform(scrollYProgress, [0, 1], [1.2, 0.8]),
+          opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.7, 0.3])
+        }}
+      />
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/0 via-gray-900/50 to-gray-900/0" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.1),rgba(255,255,255,0))]" />
-      
+
+      {/* Floating Elements */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{ scale: useTransform(scrollYProgress, [0, 1], [1, 1.2]) }}
+      >
+        <motion.div 
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
+          animate={{
+            y: [0, 50, 0],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"
+          animate={{
+            y: [50, 0, 50],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+      </motion.div>
+
+      {/* Content Container */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <motion.div 
           variants={fadeIn('up')}
@@ -74,79 +137,231 @@ const Projects = () => {
           />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div 
-              key={index}
-              variants={slideIn('up', index * 0.2)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="group relative bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 hover:border-gray-600 transition-all duration-300"
-            >
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                    <div className="flex space-x-3">
-                      <motion.a
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors duration-200"
-                      >
-                        <Github className="w-5 h-5 text-white" />
-                      </motion.a>
-                      <motion.a
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        href={project.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors duration-200"
-                      >
-                        <ExternalLink className="w-5 h-5 text-white" />
-                      </motion.a>
-                    </div>
-                    <motion.button
-                      whileHover={{ x: 5 }}
-                      className="text-white/80 hover:text-white flex items-center gap-2 text-sm"
-                    >
-                      View Details <ArrowRight className="w-4 h-4" />
-                    </motion.button>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2 text-white group-hover:text-blue-400 transition-colors duration-200">
-                  {project.title}
-                </h3>
-                <p className="text-gray-400 mb-4 line-clamp-3">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      className="px-3 py-1 bg-gray-700/50 text-gray-300 rounded-full text-sm font-medium hover:bg-blue-500/20 hover:text-blue-400 transition-colors duration-200"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
+        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+          {projects.map((project, index) => {
+            const cardRef = useRef(null);
 
-              {/* Hover Border Effect */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-500/50 rounded-xl transition-colors duration-300" />
-            </motion.div>
-          ))}
+            // Add these motion values for parallax effect
+            const mouseXMotionValue = useMotionValue(0);
+            const mouseYMotionValue = useMotionValue(0);
+
+            // Add smooth spring physics
+            const rotateX = useSpring(mouseYMotionValue, { stiffness: 150, damping: 20 });
+            const rotateY = useSpring(mouseXMotionValue, { stiffness: 150, damping: 20 });
+
+            // Handle mouse move for parallax
+            const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+              const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+              const width = rect.width;
+              const height = rect.height;
+              const currentMouseX = e.clientX - rect.left;
+              const currentMouseY = e.clientY - rect.top;
+              
+              const xPct = currentMouseX / width - 0.5;
+              const yPct = currentMouseY / height - 0.5;
+              
+              mouseXMotionValue.set(xPct * 20); // Now using the motion value
+              mouseYMotionValue.set(yPct * 20);
+            };
+
+            const handleMouseLeave = () => {
+              mouseXMotionValue.set(0);
+              mouseYMotionValue.set(0);
+            };
+            
+            return (
+              <motion.div 
+                key={index}
+                ref={cardRef}
+                custom={index}
+                variants={slideInFromBottom}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  rotateY,
+                  rotateX,
+                  transformStyle: "preserve-3d",
+                }}
+                className={`
+                  group relative overflow-hidden rounded-xl
+                  ${index % 2 === 0 ? 'md:translate-y-12' : ''}
+                  ${index % 3 === 1 ? 'lg:translate-y-24' : ''}
+                  ${index % 3 === 2 ? 'lg:translate-y-8' : ''}
+                  before:absolute before:inset-0 before:z-10 
+                  before:bg-gradient-to-b before:from-gray-900/0 
+                  before:via-gray-900/5 before:to-gray-900/20
+                  after:absolute after:inset-0 after:z-10 
+                  after:bg-gradient-to-t after:from-gray-900/40 
+                  after:to-gray-900/0
+                  bg-gradient-to-br from-gray-800/50 via-gray-800/30 to-gray-900/50
+                  backdrop-blur-[6px] backdrop-saturate-150
+                  border border-white/5 hover:border-white/10
+                  shadow-[0_8px_40px_rgba(0,0,0,0.25)]
+                  transition-all duration-300 ease-out
+                  hover:shadow-[0_20px_60px_rgba(59,130,246,0.3)]
+                  hover:backdrop-blur-[8px]
+                  hover:-translate-y-2
+                  hover:z-10
+                  transform-gpu
+                  perspective-1000
+                `}
+              >
+                {/* Shadow effect */}
+                <div
+                  className="absolute -inset-1 bg-black/30 rounded-xl blur-xl -z-10 transition-all duration-300
+                    group-hover:blur-2xl group-hover:bg-black/40"
+                />
+
+                {/* Image section with parallax */}
+                <motion.div 
+                  className="relative h-48 overflow-hidden"
+                  style={{
+                    transform: "translateZ(75px)",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <motion.img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500
+                      filter brightness-100 contrast-100 saturate-100"
+                    style={{
+                      scale: 1.1,
+                      transformStyle: "preserve-3d",
+                    }}
+                  />
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent 
+                    opacity-0 group-hover:opacity-100 transition-all duration-300 z-20"
+                  >
+                    {/* Updated icons container with adjusted positioning */}
+                    <div className="absolute bottom-0 left-0 right-0 px-8 py-4 
+                      flex justify-between items-center
+                      transform translate-y-full group-hover:translate-y-0 
+                      transition-transform duration-300 ease-out"
+                    >
+                      <div className="flex gap-2 ml-4">
+                        <motion.a
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-full 
+                            hover:bg-white/20 transition-all duration-200
+                            shadow-[0_0_15px_rgba(255,255,255,0.1)]
+                            hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                        >
+                          <Github className="w-4 h-4 text-white" />
+                        </motion.a>
+                        <motion.a
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-full 
+                            hover:bg-white/20 transition-all duration-200
+                            shadow-[0_0_15px_rgba(255,255,255,0.1)]
+                            hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                        >
+                          <ExternalLink className="w-4 h-4 text-white" />
+                        </motion.a>
+                      </div>
+                      <motion.button
+                        whileHover={{ x: 5 }}
+                        className="text-white flex items-center gap-2 text-sm
+                          px-3 py-1.5 rounded-full mr-4
+                          hover:bg-white/20 transition-all duration-200
+                          shadow-[0_0_15px_rgba(255,255,255,0.1)]
+                          hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                      >
+                        Details <ArrowRight className="w-3.5 h-3.5" />
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Content section with parallax */}
+                <motion.div 
+                  className="relative z-20 p-6 bg-gradient-to-b from-gray-800/50 to-gray-900/50 backdrop-blur-sm"
+                  style={{
+                    transform: "translateZ(50px)",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <motion.div
+                      whileHover={{ scale: 1.1, rotate: 10 }}
+                      className="p-2 rounded-lg bg-blue-500/10 text-blue-400"
+                    >
+                      <project.icon className="w-5 h-5" />
+                    </motion.div>
+                    <h3 className="text-xl font-bold text-white group-hover:text-blue-400 
+                      transition-colors duration-200 drop-shadow-[0_2px_10px_rgba(59,130,246,0.3)]">
+                      {project.title}
+                    </h3>
+                  </div>
+                  <p className="text-gray-300 mb-4 line-clamp-3 group-hover:text-gray-200 transition-colors duration-200">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, techIndex) => (
+                      <motion.span
+                        key={techIndex}
+                        whileHover={{ 
+                          scale: 1.05,
+                          y: -2
+                        }}
+                        className="px-3 py-1 bg-white/5 text-gray-300 rounded-full text-sm font-medium 
+                          relative overflow-hidden group/badge
+                          border border-white/5
+                          hover:bg-blue-500/10 hover:text-blue-400 hover:border-blue-500/20
+                          transition-all duration-200
+                          shadow-[0_2px_10px_rgba(0,0,0,0.1)]
+                          hover:shadow-[0_2px_15px_rgba(59,130,246,0.2)]"
+                      >
+                        {/* Glow effect */}
+                        <span className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/30 to-purple-500/0 
+                          opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300
+                          blur-md -z-10" 
+                        />
+                        
+                        {/* Shimmer effect */}
+                        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
+                          translate-x-[-100%] group-hover/badge:translate-x-[100%] transition-transform duration-1000
+                          -z-10" 
+                        />
+                        
+                        {tech}
+                      </motion.span>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Enhanced glow effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500
+                  bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.2),transparent_50%)]
+                  pointer-events-none z-0"
+                />
+                
+                {/* Add subtle light reflection */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500
+                  bg-gradient-to-r from-transparent via-white/10 to-transparent
+                  -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%]
+                  pointer-events-none z-0 animate-shimmer"
+                />
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Optional: Add connecting lines between cards */}
+        <div className="absolute inset-0 pointer-events-none hidden md:block">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_1px)] bg-[length:40px_40px]" />
         </div>
       </div>
     </section>

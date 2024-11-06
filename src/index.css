@@ -98,9 +98,14 @@
 
 .preserve-3d {
   transform-style: preserve-3d;
-  backface-visibility: hidden;
   perspective: 2000px;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+}
+
+.transform-gpu {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* Hide default cursor */
@@ -144,4 +149,19 @@ button, a, input, textarea, select {
 
 .delay-500 {
   animation-delay: 500ms;
+}
+
+/* Add these classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.perspective-wrapper {
+  perspective: 2000px;
+  transform-style: preserve-3d;
 }
