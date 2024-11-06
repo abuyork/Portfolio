@@ -180,6 +180,17 @@ const Projects = () => {
                 viewport={{ once: true }}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
+                animate={{
+                  y: [0, -10, 0],
+                  transition: {
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut",
+                    // Stagger the animation based on index
+                    delay: index * 0.2
+                  }
+                }}
                 style={{
                   rotateY,
                   rotateX,
@@ -209,10 +220,20 @@ const Projects = () => {
                   perspective-1000
                 `}
               >
-                {/* Shadow effect */}
-                <div
-                  className="absolute -inset-1 bg-black/30 rounded-xl blur-xl -z-10 transition-all duration-300
-                    group-hover:blur-2xl group-hover:bg-black/40"
+                {/* Add a subtle shadow animation */}
+                <motion.div
+                  className="absolute -inset-1 bg-black/30 rounded-xl blur-xl -z-10"
+                  animate={{
+                    opacity: [0.2, 0.3, 0.2],
+                    scale: [1, 1.05, 1],
+                    transition: {
+                      duration: 4,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut",
+                      delay: index * 0.2
+                    }
+                  }}
                 />
 
                 {/* Image section with parallax */}

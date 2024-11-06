@@ -17,7 +17,7 @@ const Hero = () => {
       const progress = Math.min(1, scrollPosition / windowHeight);
       setScrollProgress(progress);
 
-      // Text fade calculations remain the same
+      // Text fade calculations
       const nameLength = Math.floor((1 - progress) * "John Doe".length);
       const titleLength = Math.floor((1 - progress) * "Full Stack Developer".length);
       const descLength = Math.floor((1 - progress) * "Building beautiful, functional, and scalable web applications with modern technologies.".length);
