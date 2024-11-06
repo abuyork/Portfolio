@@ -1,5 +1,5 @@
 import { Laptop, Database, Layout, Palette } from 'lucide-react';
-import { motion, useAnimation, useInView, useScroll } from 'framer-motion';
+import { motion, useAnimation, useInView, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { AuthAnimatedBackground } from './common/AnimatedBackground';
 import { 
@@ -94,51 +94,91 @@ const About = () => {
     transition: 'transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1)',
   });
 
+  // Add scroll progress tracking
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Create transform values for different layers
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '-20%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, -5]);
+
+  const textProgress = useTransform(
+    scrollYProgress,
+    [0, 0.2],
+    [1, 0]
+  );
+
+  const techStackProgress = useTransform(
+    scrollYProgress,
+    [0.3, 0.5],
+    [1, 0]
+  );
 
   return (
     <motion.section 
       id="about" 
       ref={containerRef}
-      className="relative h-[calc(100vh+4rem)] -mt-16 pt-16 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
+      className="relative min-h-screen py-20 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
       style={{
         transformStyle: 'preserve-3d',
         perspective: '2000px',
       }}
     >
-      <AuthAnimatedBackground />
+      {/* Background layer */}
+      <motion.div 
+        className="absolute inset-0 overflow-hidden"
+        style={{
+          y: backgroundY,
+          opacity,
+        }}
+      >
+        <AuthAnimatedBackground />
+        <div className="absolute inset-0 overflow-hidden preserve-3d">
+          <motion.div 
+            className="absolute top-20 left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
+            style={parallaxStyle(0.5)}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+              rotate: [0, 180, 360]
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-20 right-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"
+            style={parallaxStyle(0.3)}
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.5, 0.3, 0.5],
+              rotate: [360, 180, 0]
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        </div>
+      </motion.div>
 
-      <div className="absolute inset-0 overflow-hidden preserve-3d">
-        <motion.div 
-          className="absolute top-20 left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
-          style={parallaxStyle(0.5)}
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-            rotate: [0, 180, 360]
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-20 right-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"
-          style={parallaxStyle(0.3)}
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.5, 0.3, 0.5],
-            rotate: [360, 180, 0]
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      </div>
-
-      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-6">
+      {/* Content layer */}
+      <motion.div 
+        className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-6"
+        style={{
+          y: contentY,
+          scale,
+          rotateX: rotate,
+        }}
+      >
         <motion.div 
           className="text-center mb-8"
           style={parallaxStyle(0.4)}
@@ -175,6 +215,14 @@ const About = () => {
                 bg-white/[0.03] hover:bg-white/[0.05]
                 p-6 rounded-2xl border border-white/10
                 transition-colors duration-300"
+              style={{
+                opacity: textProgress,
+                clipPath: useTransform(
+                  scrollYProgress,
+                  [0, 0.2],
+                  ['inset(0% 0% 0% 0%)', 'inset(0% 0% 100% 0%)']
+                )
+              }}
               whileHover={{
                 scale: 1.02,
                 transition: { duration: 0.3 }
@@ -201,6 +249,13 @@ const About = () => {
                     className="flex items-center space-x-3 group"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
+                    style={{
+                      opacity: useTransform(
+                        scrollYProgress,
+                        [0, 0.15 + index * 0.01],
+                        [1, 0]
+                      )
+                    }}
                     transition={{ delay: index * 0.1 }}
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-500/50 group-hover:bg-blue-400 
@@ -228,6 +283,28 @@ const About = () => {
                   hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)]
                   dark:hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]
                 `}
+                style={{
+                  opacity: useTransform(
+                    scrollYProgress,
+                    [0, 0.2, 0.4],
+                    [1, 0.8, 0]
+                  ),
+                  y: useTransform(
+                    scrollYProgress,
+                    [0, 1],
+                    [0, index % 2 === 0 ? 100 : -100]
+                  ),
+                  x: useTransform(
+                    scrollYProgress,
+                    [0, 1],
+                    [0, index % 2 === 0 ? -50 : 50]
+                  ),
+                  scale: useTransform(
+                    scrollYProgress,
+                    [0, 1],
+                    [1, 0.8]
+                  ),
+                }}
                 initial={{ 
                   boxShadow: "0 0px 0px rgba(8, 112, 184, 0)",
                   y: 0
@@ -372,16 +449,23 @@ const About = () => {
                     y: 0,
                     filter: "drop-shadow(0 0 0 rgba(0, 0, 0, 0))"
                   }}
-                  whileInView={{ 
-                    y: -2,
-                    filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))"
+                  style={{
+                    opacity: useTransform(
+                      scrollYProgress,
+                      [0.3, 0.3 + (index * 0.01)],
+                      [1, 0]
+                    ),
+                    y: useTransform(
+                      scrollYProgress,
+                      [0.3, 0.3 + (index * 0.01)],
+                      [0, 20]
+                    )
                   }}
                   whileHover={{
                     y: -4,
                     filter: "drop-shadow(0 8px 12px rgba(0, 0, 0, 0.2))"
                   }}
                   transition={{ 
-                    delay: index * 0.1,
                     duration: 0.3
                   }}
                 >
@@ -400,7 +484,15 @@ const About = () => {
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Add a reveal overlay */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none"
+        style={{
+          opacity: useTransform(scrollYProgress, [0, 0.5], [0, 0.5]),
+        }}
+      />
     </motion.section>
   );
 };
