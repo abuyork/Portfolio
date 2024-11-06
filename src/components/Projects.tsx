@@ -1,8 +1,15 @@
-import { Github, ExternalLink } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Github, ExternalLink, ArrowRight } from 'lucide-react';
+import { motion, useScroll } from 'framer-motion';
 import { fadeIn, slideIn } from '../utils/animations';
+import { useRef } from 'react';
 
 const Projects = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
   const projects = [
     {
       title: 'E-Commerce Platform',
@@ -31,9 +38,15 @@ const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="relative min-h-screen py-32 bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden flex items-center">
+    <section 
+      ref={containerRef}
+      id="projects" 
+      className="relative min-h-screen py-32 bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden"
+    >
+      {/* Background Elements */}
       <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:60px_60px]" />
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/0 via-gray-900/50 to-gray-900/0" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.1),rgba(255,255,255,0))]" />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <motion.div 
@@ -43,10 +56,22 @@ const Projects = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <h2 className="text-6xl font-bold mb-6 font-['Space_Grotesk'] bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500">
+          <motion.h2 
+            className="text-3xl sm:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 font-['Space_Grotesk'] tracking-tight"
+            whileHover={{
+              backgroundSize: "200% 200%",
+              transition: { duration: 1 }
+            }}
+          >
             Projects
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto"></div>
+          </motion.h2>
+          <motion.div 
+            className="w-24 h-1 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full"
+            whileInView={{
+              width: ["0%", "6rem"],
+              transition: { duration: 0.8, ease: "easeOut" }
+            }}
+          />
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -57,7 +82,7 @@ const Projects = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="group bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 hover:border-gray-600 transition-all duration-300"
+              className="group relative bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 hover:border-gray-600 transition-all duration-300"
             >
               <div className="relative h-48 overflow-hidden">
                 <img
@@ -65,28 +90,36 @@ const Projects = () => {
                   alt={project.title}
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-start p-6">
-                  <div className="flex space-x-4">
-                    <motion.a
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors duration-200"
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                    <div className="flex space-x-3">
+                      <motion.a
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors duration-200"
+                      >
+                        <Github className="w-5 h-5 text-white" />
+                      </motion.a>
+                      <motion.a
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors duration-200"
+                      >
+                        <ExternalLink className="w-5 h-5 text-white" />
+                      </motion.a>
+                    </div>
+                    <motion.button
+                      whileHover={{ x: 5 }}
+                      className="text-white/80 hover:text-white flex items-center gap-2 text-sm"
                     >
-                      <Github className="w-5 h-5 text-white" />
-                    </motion.a>
-                    <motion.a
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors duration-200"
-                    >
-                      <ExternalLink className="w-5 h-5 text-white" />
-                    </motion.a>
+                      View Details <ArrowRight className="w-4 h-4" />
+                    </motion.button>
                   </div>
                 </div>
               </div>
@@ -109,6 +142,9 @@ const Projects = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Hover Border Effect */}
+              <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-500/50 rounded-xl transition-colors duration-300" />
             </motion.div>
           ))}
         </div>
