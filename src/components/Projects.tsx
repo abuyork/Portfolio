@@ -4,14 +4,163 @@ import {
   ListTodo, // For Task Management
   Cloud // For Weather Dashboard
 } from 'lucide-react';
-import { motion, useScroll, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { fadeIn, slideInFromBottom } from '../utils/animations';
-import { useRef } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { 
   ReactIcon, NodeIcon, MongoDbIcon, StripeIcon,
   NextJsIcon, TypeScriptIcon, PostgreSqlIcon, SocketIoIcon,
   OpenWeatherIcon
 } from '../utils/TechIcons';
+
+// Add these interfaces at the top
+interface StarParticle {
+  id: number;
+  size: number;
+  x: number;
+  y: number;
+  depth: number;
+  speed: number;
+  colorIndex: number;
+  isShootingStar?: boolean;
+  isNebula?: boolean;
+  cluster?: boolean;
+}
+
+// Star colors array
+const starColors = [
+  ['#60A5FA', '#818CF8'], // blue-purple
+  ['#818CF8', '#34D399'], // purple-emerald
+  ['#34D399', '#60A5FA'], // emerald-blue
+  ['#F472B6', '#818CF8'], // pink-purple
+  ['#F59E0B', '#EC4899'], // amber-pink
+  ['#8B5CF6', '#3B82F6']  // purple-blue
+];
+
+// Star generation function
+const generateStars = (): StarParticle[] => {
+  const stars: StarParticle[] = [];
+  const starCount = 45;
+  
+  const clusterPoints = [
+    { x: 20, y: 20 }, { x: 80, y: 80 }, { x: 30, y: 70 }
+  ];
+
+  for (let i = 0; i < starCount; i++) {
+    const isCluster = Math.random() < 0.3;
+    let x, y;
+
+    if (isCluster) {
+      const cluster = clusterPoints[Math.floor(Math.random() * clusterPoints.length)];
+      x = cluster.x + (Math.random() - 0.5) * 20;
+      y = cluster.y + (Math.random() - 0.5) * 20;
+    } else {
+      x = Math.random() * 100;
+      y = Math.random() * 100;
+    }
+
+    stars.push({
+      id: i,
+      size: Math.random() * 3 + 1,
+      x,
+      y,
+      depth: Math.random() * 5 + 1,
+      speed: Math.random() * 3 + 2,
+      colorIndex: Math.floor(Math.random() * 6),
+      isShootingStar: Math.random() < 0.1,
+      isNebula: Math.random() < 0.15,
+      cluster: isCluster
+    });
+  }
+  return stars;
+};
+
+const EnhancedStarField = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const stars = useMemo(() => generateStars(), []);
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setMousePosition({
+      x: e.clientX,
+      y: e.clientY
+    });
+  };
+
+  return (
+    <div 
+      className="absolute inset-0 overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
+      {stars.map((star: StarParticle) => (
+        <motion.div
+          key={star.id}
+          className="absolute"
+          style={{
+            width: star.isShootingStar ? `${star.size * 2}px` : `${star.size}px`,
+            height: `${star.size}px`,
+            top: `${star.y}%`,
+            left: `${star.x}%`,
+            zIndex: Math.floor(star.depth),
+          }}
+          initial={{ opacity: 0 }}
+          animate={{
+            scale: [0.8, 1.2, 0.8],
+          }}
+          transition={{
+            duration: star.speed,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          {/* Star core */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: '100%',
+              height: '100%',
+              background: `linear-gradient(45deg, ${starColors[star.colorIndex][0]}, ${starColors[star.colorIndex][1]})`,
+              filter: star.cluster ? 'blur(0.3px)' : 'blur(0.5px)',
+              boxShadow: `0 0 ${star.size * 2}px ${starColors[star.colorIndex][0]}40`,
+              opacity: getStarOpacity(mousePosition, { x: star.x, y: star.y }),
+              transition: 'opacity 0.2s ease-out',
+            }}
+          />
+
+          {/* Star glow */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              inset: `-${star.size / 2}px`,
+              background: `radial-gradient(circle at center, ${starColors[star.colorIndex][0]}20, transparent 70%)`,
+              filter: 'blur(1px)',
+              opacity: getStarOpacity(mousePosition, { x: star.x, y: star.y }) * 0.5,
+              transition: 'opacity 0.2s ease-out',
+            }}
+          />
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+const getStarOpacity = (
+  mousePos: { x: number, y: number }, 
+  starPos: { x: number, y: number }
+) => {
+  // Convert percentage to pixels for more accurate distance calculation
+  const starPosPixels = {
+    x: (starPos.x / 100) * window.innerWidth,
+    y: (starPos.y / 100) * window.innerHeight
+  };
+
+  const distance = Math.sqrt(
+    Math.pow((mousePos.x - starPosPixels.x), 2) + 
+    Math.pow((mousePos.y - starPosPixels.y), 2)
+  );
+  
+  const maxDistance = 150; // Reduced radius for tighter visibility around cursor
+  return Math.max(0, 1 - (distance / maxDistance));
+};
 
 const Projects = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -66,63 +215,27 @@ const Projects = () => {
     },
   ];
 
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = containerRef.current?.getBoundingClientRect() || 
+      { left: 0, top: 0, width: 0, height: 0 };
+    
+    mouseX.set((clientX - left) / width);
+    mouseY.set((clientY - top) / height);
+  };
+
   return (
     <section 
       ref={containerRef}
       id="projects" 
       className="relative min-h-screen py-32 bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden"
+      onMouseMove={handleMouseMove}
     >
-      {/* Enhanced floating orbs with parallax - updated colors to match Hero */}
-      <div className="absolute inset-0 overflow-hidden preserve-3d">
-        <motion.div 
-          className="absolute top-20 left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"
-          animate={{
-            y: [0, 50, 0],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-20 right-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-700"
-          animate={{
-            y: [50, 0, 50],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div 
-          className="absolute top-1/3 right-1/4 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"
-          animate={{
-            y: [0, 30, 0],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/3 left-1/4 w-48 h-48 bg-pink-500/10 rounded-full blur-2xl"
-          animate={{
-            y: [30, 0, 30],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      </div>
+      {/* Replace planets with enhanced star field */}
+      <EnhancedStarField />
 
       {/* Updated heading section with Hero-like styling */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -134,7 +247,7 @@ const Projects = () => {
           className="text-center mb-20"
         >
           <motion.h2 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 font-['Space_Grotesk'] tracking-tight"
+            className="text-4xl sm:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 font-['Space_Grotesk'] tracking-tight"
             whileHover={{
               backgroundSize: "200% 200%",
               transition: { duration: 1 }
@@ -146,7 +259,7 @@ const Projects = () => {
           <motion.div 
             className="w-24 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 mx-auto rounded-full"
             whileInView={{
-              width: ["0%", "6rem"],
+              width: ["0%", "7rem"],
               transition: { duration: 0.8, ease: "easeOut" }
             }}
           />
@@ -223,13 +336,13 @@ const Projects = () => {
                   after:absolute after:inset-0 after:z-10 
                   after:bg-gradient-to-t after:from-gray-900/40 
                   after:to-gray-900/0
-                  bg-gradient-to-br from-gray-700/50 via-gray-800/30 to-gray-800/50
-                  backdrop-blur-[6px] backdrop-saturate-150
-                  border border-white/5 hover:border-white/10
+                  bg-gradient-to-br from-gray-700/30 via-gray-800/20 to-gray-800/30
+                  backdrop-blur-lg backdrop-saturate-150
+                  border border-white/10 hover:border-white/20
                   shadow-[0_8px_40px_rgba(0,0,0,0.25)]
                   transition-all duration-300 ease-out
                   hover:shadow-[0_20px_60px_rgba(59,130,246,0.3)]
-                  hover:backdrop-blur-[8px]
+                  hover:backdrop-blur-xl
                   hover:-translate-y-2
                   hover:z-10
                   transform-gpu
@@ -278,7 +391,8 @@ const Projects = () => {
                     <div className="absolute bottom-0 left-0 right-0 px-8 py-4 
                       flex justify-between items-center
                       transform translate-y-full group-hover:translate-y-0 
-                      transition-transform duration-300 ease-out"
+                      transition-transform duration-300 ease-out
+                      backdrop-blur-lg bg-gray-900/20"
                     >
                       <div className="flex gap-2 ml-4">
                         <motion.a
@@ -324,7 +438,7 @@ const Projects = () => {
 
                 {/* Content section with parallax */}
                 <motion.div 
-                  className="relative z-20 p-6 bg-gradient-to-b from-gray-700/50 to-gray-800/50 backdrop-blur-sm"
+                  className="relative z-20 p-6 bg-gradient-to-b from-gray-700/30 to-gray-800/30 backdrop-blur-md"
                   style={{
                     transform: "translateZ(50px)",
                     transformStyle: "preserve-3d",
@@ -368,9 +482,10 @@ const Projects = () => {
                         
                         {/* Tooltip */}
                         <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 
-                          bg-gray-900 text-white text-xs rounded-md opacity-0 
+                          bg-gray-900/80 backdrop-blur-md text-white text-xs rounded-md opacity-0 
                           group-hover/tech:opacity-100 transition-opacity duration-200
-                          pointer-events-none whitespace-nowrap"
+                          pointer-events-none whitespace-nowrap
+                          border border-white/10"
                         >
                           {tech.name}
                         </div>
@@ -396,6 +511,94 @@ const Projects = () => {
           })}
         </div>
       </div>
+
+      {/* Update the shine effect container with reduced brightness */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(59,130,246,0.15), transparent 40%)',
+          '--mouse-x': useTransform(mouseX, value => `${value * 100}%`),
+          '--mouse-y': useTransform(mouseY, value => `${value * 100}%`)
+        } as any}
+      />
+
+      {/* Add these new animated shine rays */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
+          animate={{
+            rotate: [0, 360],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        >
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute top-1/2 left-1/2 w-full h-[1px] origin-left"
+              style={{
+                background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.1), transparent)',
+                rotate: `${i * 60}deg`,
+              }}
+              animate={{
+                opacity: [0.1, 0.3, 0.1],
+              }}
+              transition={{
+                duration: 3,
+                delay: i * 1,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Replace the sparkle points with aesthetic stars */}
+      {[...Array(25)].map((_, i) => (
+        <motion.div
+          key={i}
+          className={`absolute ${i % 3 === 0 ? 'w-[3px] h-[3px]' : 'w-[2px] h-[2px]'} rounded-full`}
+          style={{
+            background: i % 4 === 0 
+              ? 'linear-gradient(to right, #60A5FA, #818CF8)' // blue-purple
+              : i % 4 === 1
+              ? 'linear-gradient(to right, #818CF8, #34D399)' // purple-emerald
+              : i % 4 === 2
+              ? 'linear-gradient(to right, #34D399, #60A5FA)' // emerald-blue
+              : 'linear-gradient(to right, #F472B6, #818CF8)', // pink-purple
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            filter: 'blur(0.5px)',
+            boxShadow: i % 3 === 0 
+              ? '0 0 4px rgba(96, 165, 250, 0.5)' 
+              : '0 0 2px rgba(96, 165, 250, 0.3)',
+          }}
+          animate={{
+            opacity: [0.3, 0.8, 0.3],
+            scale: [0.8, 1.2, 0.8],
+          }}
+          transition={{
+            duration: 3 + Math.random() * 3,
+            delay: Math.random() * 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          {/* Add inner glow */}
+          <div 
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: 'inherit',
+              filter: 'blur(1px)',
+              opacity: 0.5,
+            }}
+          />
+        </motion.div>
+      ))}
     </section>
   );
 };

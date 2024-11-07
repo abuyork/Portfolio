@@ -165,3 +165,19 @@ button, a, input, textarea, select {
   perspective: 2000px;
   transform-style: preserve-3d;
 }
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  50% {
+    transform: translateX(100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(100%) skewX(-15deg);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 8s infinite;
+}
