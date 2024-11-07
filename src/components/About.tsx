@@ -126,7 +126,7 @@ const About = () => {
     <motion.section 
       id="about" 
       ref={containerRef}
-      className="relative min-h-screen py-20 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
+      className="relative min-h-[90vh] py-16 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
       style={{
         transformStyle: 'preserve-3d',
         perspective: '2000px',
@@ -175,7 +175,7 @@ const About = () => {
 
       {/* Content layer */}
       <motion.div 
-        className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-6"
+        className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-4"
         style={{
           y: contentY,
           scale,
