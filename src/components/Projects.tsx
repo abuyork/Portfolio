@@ -6,161 +6,12 @@ import {
 } from 'lucide-react';
 import { motion, useScroll, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { fadeIn, slideInFromBottom } from '../utils/animations';
-import { useRef, useState, useMemo } from 'react';
+import { useRef } from 'react';
 import { 
   ReactIcon, NodeIcon, MongoDbIcon, StripeIcon,
   NextJsIcon, TypeScriptIcon, PostgreSqlIcon, SocketIoIcon,
   OpenWeatherIcon
 } from '../utils/TechIcons';
-
-// Add these interfaces at the top
-interface StarParticle {
-  id: number;
-  size: number;
-  x: number;
-  y: number;
-  depth: number;
-  speed: number;
-  colorIndex: number;
-  isShootingStar?: boolean;
-  isNebula?: boolean;
-  cluster?: boolean;
-}
-
-// Star colors array
-const starColors = [
-  ['#60A5FA', '#818CF8'], // blue-purple
-  ['#818CF8', '#34D399'], // purple-emerald
-  ['#34D399', '#60A5FA'], // emerald-blue
-  ['#F472B6', '#818CF8'], // pink-purple
-  ['#F59E0B', '#EC4899'], // amber-pink
-  ['#8B5CF6', '#3B82F6']  // purple-blue
-];
-
-// Star generation function
-const generateStars = (): StarParticle[] => {
-  const stars: StarParticle[] = [];
-  const starCount = 45;
-  
-  const clusterPoints = [
-    { x: 20, y: 20 }, { x: 80, y: 80 }, { x: 30, y: 70 }
-  ];
-
-  for (let i = 0; i < starCount; i++) {
-    const isCluster = Math.random() < 0.3;
-    let x, y;
-
-    if (isCluster) {
-      const cluster = clusterPoints[Math.floor(Math.random() * clusterPoints.length)];
-      x = cluster.x + (Math.random() - 0.5) * 20;
-      y = cluster.y + (Math.random() - 0.5) * 20;
-    } else {
-      x = Math.random() * 100;
-      y = Math.random() * 100;
-    }
-
-    stars.push({
-      id: i,
-      size: Math.random() * 3 + 1,
-      x,
-      y,
-      depth: Math.random() * 5 + 1,
-      speed: Math.random() * 3 + 2,
-      colorIndex: Math.floor(Math.random() * 6),
-      isShootingStar: Math.random() < 0.1,
-      isNebula: Math.random() < 0.15,
-      cluster: isCluster
-    });
-  }
-  return stars;
-};
-
-const EnhancedStarField = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const stars = useMemo(() => generateStars(), []);
-  
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePosition({
-      x: e.clientX,
-      y: e.clientY
-    });
-  };
-
-  return (
-    <div 
-      className="absolute inset-0 overflow-hidden"
-      onMouseMove={handleMouseMove}
-    >
-      {stars.map((star: StarParticle) => (
-        <motion.div
-          key={star.id}
-          className="absolute"
-          style={{
-            width: star.isShootingStar ? `${star.size * 2}px` : `${star.size}px`,
-            height: `${star.size}px`,
-            top: `${star.y}%`,
-            left: `${star.x}%`,
-            zIndex: Math.floor(star.depth),
-          }}
-          initial={{ opacity: 0 }}
-          animate={{
-            scale: [0.8, 1.2, 0.8],
-          }}
-          transition={{
-            duration: star.speed,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          {/* Star core */}
-          <motion.div
-            className="absolute rounded-full"
-            style={{
-              width: '100%',
-              height: '100%',
-              background: `linear-gradient(45deg, ${starColors[star.colorIndex][0]}, ${starColors[star.colorIndex][1]})`,
-              filter: star.cluster ? 'blur(0.3px)' : 'blur(0.5px)',
-              boxShadow: `0 0 ${star.size * 2}px ${starColors[star.colorIndex][0]}40`,
-              opacity: getStarOpacity(mousePosition, { x: star.x, y: star.y }),
-              transition: 'opacity 0.2s ease-out',
-            }}
-          />
-
-          {/* Star glow */}
-          <motion.div
-            className="absolute rounded-full"
-            style={{
-              inset: `-${star.size / 2}px`,
-              background: `radial-gradient(circle at center, ${starColors[star.colorIndex][0]}20, transparent 70%)`,
-              filter: 'blur(1px)',
-              opacity: getStarOpacity(mousePosition, { x: star.x, y: star.y }) * 0.5,
-              transition: 'opacity 0.2s ease-out',
-            }}
-          />
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-const getStarOpacity = (
-  mousePos: { x: number, y: number }, 
-  starPos: { x: number, y: number }
-) => {
-  // Convert percentage to pixels for more accurate distance calculation
-  const starPosPixels = {
-    x: (starPos.x / 100) * window.innerWidth,
-    y: (starPos.y / 100) * window.innerHeight
-  };
-
-  const distance = Math.sqrt(
-    Math.pow((mousePos.x - starPosPixels.x), 2) + 
-    Math.pow((mousePos.y - starPosPixels.y), 2)
-  );
-  
-  const maxDistance = 150; // Reduced radius for tighter visibility around cursor
-  return Math.max(0, 1 - (distance / maxDistance));
-};
 
 const Projects = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -168,8 +19,6 @@ const Projects = () => {
     target: containerRef,
     offset: ["start end", "end start"]
   });
-
-  // Create animated values based on scroll position
 
   const projects = [
     {
@@ -234,9 +83,6 @@ const Projects = () => {
       className="relative min-h-screen py-32 bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden"
       onMouseMove={handleMouseMove}
     >
-      {/* Replace planets with enhanced star field */}
-      <EnhancedStarField />
-
       {/* Updated heading section with Hero-like styling */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <motion.div 
@@ -265,7 +111,7 @@ const Projects = () => {
           />
         </motion.div>
 
-        {/* Project cards grid - update card background */}
+        {/* Project cards grid */}
         <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {projects.map((project, index) => {
             const cardRef = useRef(null);
@@ -556,49 +402,6 @@ const Projects = () => {
           ))}
         </motion.div>
       </div>
-
-      {/* Replace the sparkle points with aesthetic stars */}
-      {[...Array(25)].map((_, i) => (
-        <motion.div
-          key={i}
-          className={`absolute ${i % 3 === 0 ? 'w-[3px] h-[3px]' : 'w-[2px] h-[2px]'} rounded-full`}
-          style={{
-            background: i % 4 === 0 
-              ? 'linear-gradient(to right, #60A5FA, #818CF8)' // blue-purple
-              : i % 4 === 1
-              ? 'linear-gradient(to right, #818CF8, #34D399)' // purple-emerald
-              : i % 4 === 2
-              ? 'linear-gradient(to right, #34D399, #60A5FA)' // emerald-blue
-              : 'linear-gradient(to right, #F472B6, #818CF8)', // pink-purple
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            filter: 'blur(0.5px)',
-            boxShadow: i % 3 === 0 
-              ? '0 0 4px rgba(96, 165, 250, 0.5)' 
-              : '0 0 2px rgba(96, 165, 250, 0.3)',
-          }}
-          animate={{
-            opacity: [0.3, 0.8, 0.3],
-            scale: [0.8, 1.2, 0.8],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 3,
-            delay: Math.random() * 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
-          {/* Add inner glow */}
-          <div 
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: 'inherit',
-              filter: 'blur(1px)',
-              opacity: 0.5,
-            }}
-          />
-        </motion.div>
-      ))}
     </section>
   );
 };
