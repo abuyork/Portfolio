@@ -97,7 +97,7 @@ const Projects = () => {
     <motion.section 
       ref={sectionRef}
       id="projects" 
-      className="relative min-h-screen py-32 bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden"
+      className="relative min-h-screen py-20 bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       {/* Liquid wave overlay */}
@@ -171,34 +171,6 @@ const Projects = () => {
           willChange: 'transform',
         }}
       >
-        {/* Floating bubbles effect */}
-        <motion.div className="absolute inset-0 pointer-events-none">
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-4 h-4 rounded-full bg-blue-500/10"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: isInView ? 0 : [-200, 200],
-                x: isInView ? 0 : [
-                  Math.sin(i) * 50,
-                  Math.sin(i + Math.PI) * 50
-                ],
-                scale: isInView ? 1 : [1, 0],
-                opacity: isInView ? 1 : [0.8, 0],
-              }}
-              transition={{
-                duration: 4 + Math.random() * 4,
-                delay: i * 0.2,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </motion.div>
-
         {/* Original content */}
         <motion.div
           animate={{
@@ -217,7 +189,7 @@ const Projects = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="text-center mb-20"
+              className="text-center mb-12"
             >
               <motion.h2 
                 className="text-4xl sm:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 font-['Space_Grotesk'] tracking-tight"
@@ -239,7 +211,7 @@ const Projects = () => {
             </motion.div>
 
             {/* Project cards grid */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+            <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {projects.map((project, index) => {
                 const cardRef = useRef(null);
 
@@ -309,13 +281,12 @@ const Projects = () => {
                       after:absolute after:inset-0 after:z-10 
                       after:bg-gradient-to-t after:from-gray-900/40 
                       after:to-gray-900/0
-                      bg-gradient-to-br from-gray-700/30 via-gray-800/20 to-gray-800/30
-                      backdrop-blur-lg backdrop-saturate-150
+                      bg-gradient-to-br from-gray-900/95 via-gray-950/95 to-gray-900/95
+                      backdrop-blur-sm backdrop-saturate-150
                       border border-white/10 hover:border-white/20
                       shadow-[0_8px_40px_rgba(0,0,0,0.25)]
                       transition-all duration-300 ease-out
                       hover:shadow-[0_20px_60px_rgba(59,130,246,0.3)]
-                      hover:backdrop-blur-xl
                       hover:-translate-y-2
                       hover:z-10
                       transform-gpu
@@ -340,7 +311,7 @@ const Projects = () => {
 
                     {/* Image section with parallax */}
                     <motion.div 
-                      className="relative h-48 overflow-hidden"
+                      className="relative h-64 overflow-hidden"
                       style={{
                         transform: "translateZ(75px)",
                         transformStyle: "preserve-3d",
@@ -364,8 +335,7 @@ const Projects = () => {
                         <div className="absolute bottom-0 left-0 right-0 px-8 py-4 
                           flex justify-between items-center
                           transform translate-y-full group-hover:translate-y-0 
-                          transition-transform duration-300 ease-out
-                          backdrop-blur-lg bg-gray-900/20"
+                          transition-transform duration-300 ease-out"
                         >
                           <div className="flex gap-2 ml-4">
                             <motion.a
@@ -375,9 +345,9 @@ const Projects = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="p-2 rounded-full 
-                                hover:bg-white/20 transition-all duration-200
-                                shadow-[0_0_15px_rgba(255,255,255,0.1)]
-                                hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                                border border-white/20
+                                transition-all duration-200
+                                hover:text-blue-400 hover:border-blue-400"
                             >
                               <Github className="w-4 h-4 text-white" />
                             </motion.a>
@@ -388,9 +358,9 @@ const Projects = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="p-2 rounded-full 
-                                hover:bg-white/20 transition-all duration-200
-                                shadow-[0_0_15px_rgba(255,255,255,0.1)]
-                                hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                                border border-white/20
+                                transition-all duration-200
+                                hover:text-blue-400 hover:border-blue-400"
                             >
                               <ExternalLink className="w-4 h-4 text-white" />
                             </motion.a>
@@ -399,9 +369,9 @@ const Projects = () => {
                             whileHover={{ x: 5 }}
                             className="text-white flex items-center gap-2 text-sm
                               px-3 py-1.5 rounded-full mr-4
-                              hover:bg-white/20 transition-all duration-200
-                              shadow-[0_0_15px_rgba(255,255,255,0.1)]
-                              hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                              border border-white/20
+                              transition-all duration-200
+                              hover:text-blue-400 hover:border-blue-400"
                           >
                             Details <ArrowRight className="w-3.5 h-3.5" />
                           </motion.button>
@@ -411,7 +381,7 @@ const Projects = () => {
 
                     {/* Content section with parallax */}
                     <motion.div 
-                      className="relative z-20 p-6 bg-gradient-to-b from-gray-700/30 to-gray-800/30 backdrop-blur-md"
+                      className="relative z-20 p-10 bg-gradient-to-b from-gray-900/95 to-gray-950/95 backdrop-blur-sm"
                       style={{
                         transform: "translateZ(50px)",
                         transformStyle: "preserve-3d",
@@ -420,16 +390,16 @@ const Projects = () => {
                       <div className="flex items-center gap-3 mb-2">
                         <motion.div
                           whileHover={{ scale: 1.1, rotate: 10 }}
-                          className="p-2 rounded-lg bg-blue-500/10 text-blue-400"
+                          className="p-2 rounded-lg bg-blue-500/20 text-blue-400"
                         >
                           <project.icon className="w-5 h-5" />
                         </motion.div>
-                        <h3 className="text-xl font-bold text-white group-hover:text-blue-400 
+                        <h3 className="text-xl font-bold text-white 
                           transition-colors duration-200 drop-shadow-[0_2px_10px_rgba(59,130,246,0.3)]">
                           {project.title}
                         </h3>
                       </div>
-                      <p className="text-gray-300 mb-4 line-clamp-3 group-hover:text-gray-200 transition-colors duration-200">
+                      <p className="text-gray-100 mb-6 line-clamp-2 transition-colors duration-200 leading-relaxed">
                         {project.description}
                       </p>
                       <div className="flex flex-wrap items-center justify-center gap-4 mt-4">
@@ -442,20 +412,20 @@ const Projects = () => {
                             }}
                             className="relative group/tech"
                           >
-                            <div className="w-6 h-6 rounded-lg bg-white/5 p-1
+                            <div className="w-6 h-6 rounded-lg bg-white/10 p-1
                               hover:bg-blue-500/10 transition-all duration-200
-                              border border-white/5 hover:border-blue-500/20
+                              border border-white/10 hover:border-blue-500/20
                               shadow-[0_2px_10px_rgba(0,0,0,0.1)]
                               hover:shadow-[0_2px_15px_rgba(59,130,246,0.2)]
                               flex items-center justify-center"
                             >
-                              <tech.icon className="w-full h-full text-gray-300 group-hover/tech:text-blue-400
+                              <tech.icon className="w-full h-full text-white group-hover/tech:text-blue-400
                                 transition-colors duration-200" />
                             </div>
                             
-                            {/* Tooltip */}
+                            {/* Update tooltip background */}
                             <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 
-                              bg-gray-900/80 backdrop-blur-md text-white text-xs rounded-md opacity-0 
+                              bg-gray-900 text-white text-xs rounded-md opacity-0 
                               group-hover/tech:opacity-100 transition-opacity duration-200
                               pointer-events-none whitespace-nowrap
                               border border-white/10"
