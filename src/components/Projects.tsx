@@ -97,7 +97,7 @@ const Projects = () => {
     <motion.section 
       ref={sectionRef}
       id="projects" 
-      className="relative min-h-screen py-20 bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden"
+      className="relative min-h-[110vh] py-20 bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       {/* Liquid wave overlay */}
