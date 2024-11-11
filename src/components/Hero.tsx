@@ -6,7 +6,7 @@ const Hero = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
-  const [nameText, setNameText] = useState("John Doe");
+  const [nameText, setNameText] = useState("Alex Dufresne");
   const [titleText, setTitleText] = useState("Full Stack Developer");
   const [descText, setDescText] = useState("Building beautiful, functional, and scalable web applications with modern technologies.");
 
