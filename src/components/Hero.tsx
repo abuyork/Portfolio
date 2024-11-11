@@ -18,11 +18,11 @@ const Hero = () => {
       setScrollProgress(progress);
 
       // Text fade calculations
-      const nameLength = Math.floor((1 - progress) * "John Doe".length);
+      const nameLength = Math.floor((1 - progress) * "Alex Dufresne".length);
       const titleLength = Math.floor((1 - progress) * "Full Stack Developer".length);
       const descLength = Math.floor((1 - progress) * "Building beautiful, functional, and scalable web applications with modern technologies.".length);
 
-      setNameText("John Doe".slice(0, Math.max(0, nameLength)));
+      setNameText("Alex Dufresne".slice(0, Math.max(0, nameLength)));
       setTitleText("Full Stack Developer".slice(0, Math.max(0, titleLength)));
       setDescText("Building beautiful, functional, and scalable web applications with modern technologies.".slice(0, Math.max(0, descLength)));
     };
