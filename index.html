@@ -4,10 +4,32 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>Alex Portfolio</title>
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Array of favicon URLs (you can add your own SVGs or PNGs here)
+      const favicons = [
+        '/vite.svg',
+        'https://emojiapi.dev/api/v1/1f680/32.png', // 🚀
+        'https://emojiapi.dev/api/v1/1f4bb/32.png', // 💻
+        'https://emojiapi.dev/api/v1/1f525/32.png', // 🔥
+        'https://emojiapi.dev/api/v1/1f60e/32.png', // 😎
+        'https://emojiapi.dev/api/v1/1f984/32.png', // 🦄
+        'https://emojiapi.dev/api/v1/1f3af/32.png', // 🎯
+        'https://emojiapi.dev/api/v1/1f680/32.png', // 🚀
+        'https://emojiapi.dev/api/v1/1f44d/32.png', // 👍
+      ];
+      const randomFavicon = favicons[Math.floor(Math.random() * favicons.length)];
+      let link = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = randomFavicon;
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

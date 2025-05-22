@@ -14,20 +14,20 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      value: 'contact@example.com',
-      href: 'mailto:contact@example.com',
+      value: 'nortoshev@bk.ru',
+      href: 'mailto:nortoshev@bk.ru',
     },
     {
       icon: Phone,
       title: 'Phone',
-      value: '+1 (555) 123-4567',
+      value: '+82 10 6895 3473',
       href: 'tel:+15551234567',
     },
     {
       icon: MapPin,
       title: 'Location',
-      value: 'San Francisco, CA',
-      href: 'https://maps.google.com/?q=San+Francisco',
+      value: 'Seoul, SK',
+      href: 'https://maps.google.com/?q=Seoul',
     },
   ];
 
@@ -48,7 +48,6 @@ const Contact = () => {
       [e.target.name]: e.target.value,
     });
   };
-
   return (
     <section id="contact" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
