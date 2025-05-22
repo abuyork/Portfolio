@@ -105,10 +105,10 @@ const Hero = () => {
           {/* Name section - reduced size */}
           <div className="relative preserve-3d" style={parallaxStyle(0.4)}>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold opacity-0 animate-slide-up">
-              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500 font-['Space_Grotesk']">
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500" style={{ fontFamily: '"Alex Brush", cursive' }}>
                 {nameText.split(' ')[0]}
               </span>
-              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500 font-['Space_Grotesk']">
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500" style={{ fontFamily: '"Alex Brush", cursive' }}>
                 {nameText.split(' ')[1]}
               </span>
             </h1>
