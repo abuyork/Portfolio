@@ -6,7 +6,7 @@ const Hero = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
-  const [nameText, setNameText] = useState("Alex Dufresne");
+  const [nameText, setNameText] = useState("Alex Abdugani");
   const [titleText, setTitleText] = useState("Full Stack Developer");
   const [descText, setDescText] = useState("Building beautiful, functional, and scalable web applications with modern technologies.");
 
@@ -18,11 +18,11 @@ const Hero = () => {
       setScrollProgress(progress);
 
       // Text fade calculations
-      const nameLength = Math.floor((1 - progress) * "Alex Dufresne".length);
+      const nameLength = Math.floor((1 - progress) * "Alex Abdugani".length);
       const titleLength = Math.floor((1 - progress) * "Full Stack Developer".length);
       const descLength = Math.floor((1 - progress) * "Building beautiful, functional, and scalable web applications with modern technologies.".length);
 
-      setNameText("Alex Dufresne".slice(0, Math.max(0, nameLength)));
+      setNameText("Alex Abdugani".slice(0, Math.max(0, nameLength)));
       setTitleText("Full Stack Developer".slice(0, Math.max(0, titleLength)));
       setDescText("Building beautiful, functional, and scalable web applications with modern technologies.".slice(0, Math.max(0, descLength)));
     };
@@ -105,8 +105,11 @@ const Hero = () => {
           {/* Name section - reduced size */}
           <div className="relative preserve-3d" style={parallaxStyle(0.4)}>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold opacity-0 animate-slide-up">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500 font-['Space_Grotesk']">
-                {nameText}
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500 font-['Space_Grotesk']">
+                {nameText.split(' ')[0]}
+              </span>
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500 font-['Space_Grotesk']">
+                {nameText.split(' ')[1]}
               </span>
             </h1>
             <div className="absolute -inset-x-16 -inset-y-8 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-emerald-500/20 blur-3xl -z-10 animate-pulse" />
