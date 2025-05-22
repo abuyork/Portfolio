@@ -1,5 +1,5 @@
 git add .
-git commit -m "Changed Name on Hero"
+git commit -m "Modified Projects Page"
 
 # git add .
 # git commit --amend --no-edit

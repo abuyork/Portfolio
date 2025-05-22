@@ -136,7 +136,7 @@ const Hero = () => {
           {/* Social links section - reduced spacing */}
           <div className="flex justify-center space-x-4 md:space-x-6 opacity-0 animate-slide-up animation-delay-600" style={parallaxStyle(0.3)}>
             {/* Social links with reduced padding */}
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" 
+            <a href="https://github.com/abuyork" target="_blank" rel="noopener noreferrer" 
                className="group relative p-3 rounded-full hover:bg-gray-800/30 backdrop-blur-sm transition-all duration-300">
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity" />
               <Github className="w-5 h-5 group-hover:text-blue-400 transition-colors relative z-10" />
@@ -154,7 +154,7 @@ const Hero = () => {
               </span>
             </a>
             
-            <a href="mailto:contact@example.com"
+            <a href="mailto:nortoshev@bk.ru"
                className="group relative p-3 rounded-full hover:bg-gray-800/30 backdrop-blur-sm transition-all duration-300">
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity" />
               <Mail className="w-5 h-5 group-hover:text-blue-400 transition-colors relative z-10" />
