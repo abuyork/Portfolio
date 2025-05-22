@@ -13,10 +13,11 @@ import {
 } from '../utils/TechIcons';
 
 const Projects = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
   useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
+    layoutEffect: false
   });
 
   // Add keyframes for gradient animation to document head
@@ -84,16 +85,11 @@ const Projects = () => {
     },
   ];
 
-  const sectionRef = useRef(null);
-
-  useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"]
-  });
-
   return (
     <section 
       id="projects" 
+      ref={containerRef}
+      style={{ position: 'relative' }}
       className="relative min-h-[110vh] py-20 bg-gradient-to-br from-gray-900 via-gray-950 to-blue-950/90 text-white overflow-hidden flex items-center justify-center"
     >
 

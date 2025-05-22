@@ -1,5 +1,5 @@
 import { Laptop, Database, Layout, Palette } from 'lucide-react';
-import { motion, useAnimation, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useAnimation, useInView } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { AuthAnimatedBackground } from './common/AnimatedBackground';
 import { 
@@ -14,10 +14,6 @@ const About = () => {
   const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLElement>(null);
-  useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
 
   const services = [
     {
@@ -94,34 +90,6 @@ const About = () => {
     transition: 'transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1)',
   });
 
-  // Add scroll progress tracking
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  // Create transform values for different layers
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '-20%']);
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, -5]);
-
-  const textProgress = useTransform(
-    scrollYProgress,
-    [0, 0.2],
-    [1, 0]
-  );
-
-
-  // Add these new transform controls near your other useTransform declarations
-
-
-
-  // Add these new transform controls
-
-
-
   return (
     <motion.section 
       id="about" 
@@ -135,10 +103,6 @@ const About = () => {
       {/* Background layer */}
       <motion.div 
         className="absolute inset-0 overflow-hidden"
-        style={{
-          y: backgroundY,
-          opacity,
-        }}
       >
         <AuthAnimatedBackground />
         <div className="absolute inset-0 overflow-hidden preserve-3d">
@@ -176,11 +140,6 @@ const About = () => {
       {/* Content layer */}
       <motion.div 
         className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative py-4"
-        style={{
-          y: contentY,
-          scale,
-          rotateX: rotate,
-        }}
       >
         <motion.div 
           className="text-center mb-8"
@@ -213,36 +172,12 @@ const About = () => {
             className="space-y-6 flex flex-col"
             style={parallaxStyle(0.2)}
           >
-            <motion.p
+            <motion.div
               className="text-sm sm:text-base text-gray-300 leading-relaxed backdrop-blur-sm 
                 bg-white/[0.03] hover:bg-white/[0.05]
                 p-6 rounded-2xl border border-white/10
                 transition-colors duration-300"
               style={{
-                opacity: textProgress,
-                transform: useTransform(
-                  scrollYProgress,
-                  [0, 0.2],
-                  ['perspective(1000px) rotateX(0deg) scale(1)', 'perspective(1000px) rotateX(90deg) scale(0.8)']
-                ),
-                filter: useTransform(
-                  scrollYProgress,
-                  [0, 0.1, 0.2],
-                  [
-                    'blur(0px) brightness(1)',
-                    'blur(4px) brightness(2)',
-                    'blur(12px) brightness(0)'
-                  ]
-                ),
-                boxShadow: useTransform(
-                  scrollYProgress,
-                  [0, 0.1, 0.2],
-                  [
-                    '0 0 0 rgba(59, 130, 246, 0)',
-                    '0 0 30px rgba(59, 130, 246, 0.5)',
-                    '0 0 0 rgba(59, 130, 246, 0)'
-                  ]
-                ),
                 transformOrigin: 'center top',
               }}
               whileHover={{
@@ -271,13 +206,6 @@ const About = () => {
                     className="flex items-center space-x-3 group"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    style={{
-                      opacity: useTransform(
-                        scrollYProgress,
-                        [0, 0.15 + index * 0.01],
-                        [1, 0]
-                      )
-                    }}
                     transition={{ delay: index * 0.1 }}
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-500/50 group-hover:bg-blue-400 
@@ -286,7 +214,7 @@ const About = () => {
                   </motion.li>
                 ))}
               </ul>
-            </motion.p>
+            </motion.div>
           </motion.div>
 
           <motion.div 
@@ -305,43 +233,6 @@ const About = () => {
                   hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)]
                   dark:hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]
                 `}
-                style={{
-                  scale: useTransform(
-                    scrollYProgress,
-                    [0.2, 0.4],
-                    [1, 0.8]
-                  ),
-                  rotateX: useTransform(
-                    scrollYProgress,
-                    [0.2, 0.4],
-                    [0, index % 2 === 0 ? 45 : -45]
-                  ),
-                  transform: useTransform(
-                    scrollYProgress,
-                    [0.2, 0.4],
-                    [
-                      'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)',
-                      `perspective(1000px) 
-                       rotateX(${index * 90}deg) 
-                       rotateY(${index * 90}deg) 
-                       translateZ(-500px)`
-                    ]
-                  ),
-                  opacity: useTransform(
-                    scrollYProgress,
-                    [0.2, 0.3, 0.4],
-                    [1, 0.5, 0]
-                  ),
-                  filter: useTransform(
-                    scrollYProgress,
-                    [0.2, 0.3, 0.4],
-                    [
-                      'blur(0px) brightness(1)',
-                      'blur(4px) brightness(1.5)',
-                      'blur(12px) brightness(0)'
-                    ]
-                  )
-                }}
                 initial={{ 
                   boxShadow: "0 0px 0px rgba(8, 112, 184, 0)",
                   y: 0
@@ -478,42 +369,10 @@ const About = () => {
                 { Icon: SiDocker, color: 'text-[#2496ED]', tooltip: 'Docker' },
                 { Icon: SiAmazon, color: 'text-[#FF9900]', tooltip: 'AWS' },
                 { Icon: SiFigma, color: 'text-[#F24E1E]', tooltip: 'Figma' },
-              ].map(({ Icon, color, tooltip }, index) => (
+              ].map(({ Icon, color, tooltip }) => (
                 <motion.div
                   key={tooltip}
                   className="group relative flex flex-col items-center"
-                  style={{
-                    transform: useTransform(
-                      scrollYProgress,
-                      [0.3, 0.3 + (index * 0.02)],
-                      [
-                        'perspective(1000px) rotateY(0deg) translateZ(0px)',
-                        `perspective(1000px) rotateY(${(index % 2 ? 720 : -720)}deg) translateZ(-200px)`
-                      ]
-                    ),
-                    opacity: useTransform(
-                      scrollYProgress,
-                      [0.3, 0.3 + (index * 0.02)],
-                      [1, 0]
-                    ),
-                    filter: useTransform(
-                      scrollYProgress,
-                      [0.3, 0.3 + (index * 0.02)],
-                      [
-                        'blur(0px) brightness(1)',
-                        'blur(8px) brightness(2)'
-                      ]
-                    ),
-                    boxShadow: useTransform(
-                      scrollYProgress,
-                      [0.3, 0.3 + (index * 0.01), 0.3 + (index * 0.02)],
-                      [
-                        '0 0 0 rgba(59, 130, 246, 0)',
-                        '0 0 30px currentColor',
-                        '0 0 0 rgba(59, 130, 246, 0)'
-                      ]
-                    )
-                  }}
                   whileHover={{
                     scale: 1.2,
                     rotate: [0, -10, 10, 0],
@@ -533,21 +392,6 @@ const About = () => {
                   />
                   <motion.span 
                     className="absolute top-full mt-2 text-xs text-gray-400 whitespace-nowrap"
-                    style={{
-                      opacity: useTransform(
-                        scrollYProgress,
-                        [0.3, 0.3 + (index * 0.02)],
-                        [1, 0]
-                      ),
-                      transform: useTransform(
-                        scrollYProgress,
-                        [0.3, 0.3 + (index * 0.02)],
-                        [
-                          'translateY(0px) scale(1)',
-                          'translateY(20px) scale(0.8)'
-                        ]
-                      )
-                    }}
                   >
                     {tooltip}
                   </motion.span>
@@ -557,14 +401,6 @@ const About = () => {
           </motion.div>
         </div>
       </motion.div>
-
-      {/* Add a reveal overlay */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none"
-        style={{
-          opacity: useTransform(scrollYProgress, [0, 0.5], [0, 0.5]),
-        }}
-      />
     </motion.section>
   );
 };
