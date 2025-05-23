@@ -182,3 +182,13 @@ button, a, input, textarea, select {
 .animate-shimmer {
   animation: shimmer 8s infinite;
 }
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}

@@ -1,16 +1,20 @@
 import { 
   Github, ExternalLink, 
-  ShoppingCart, // For E-commerce
-  ListTodo, // For Task Management
-  Cloud // For Weather Dashboard
+  Home, // For Real Estate
+  Pizza, // For Pizza Shop
+  HelpCircle // For Quiz Website
 } from 'lucide-react';
 import { useScroll } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { useRef} from 'react';
 import { 
-  ReactIcon, NodeIcon, MongoDbIcon, StripeIcon,
-  NextJsIcon, TypeScriptIcon, PostgreSqlIcon, SocketIoIcon,
-  OpenWeatherIcon
+  ReactIcon, NodeIcon, MongoDbIcon,
+  NextJsIcon, TypeScriptIcon, SocketIoIcon,
+  FirebaseIcon,
+  AiIcon
 } from '../utils/TechIcons';
+import penthouseImg from '../assets/penthouse.jpeg';
+import pizeriaImg from '../assets/pizeria.jpeg';
+import quizappImg from '../assets/quizapp.jpeg';
 
 const Projects = () => {
   const containerRef = useRef<HTMLElement>(null);
@@ -20,68 +24,47 @@ const Projects = () => {
     layoutEffect: false
   });
 
-  // Add keyframes for gradient animation to document head
-  useEffect(() => {
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-      @keyframes gradientShift {
-        0% { background-position: 0% 50% }
-        50% { background-position: 100% 50% }
-        100% { background-position: 0% 50% }
-      }
-      @keyframes pulse {
-        0% { opacity: 0.6; }
-        100% { opacity: 1; }
-      }
-    `;
-    document.head.appendChild(styleElement);
-
-    return () => {
-      document.head.removeChild(styleElement);
-    };
-  }, []);
-
   const projects = [
     {
-      title: 'E-Commerce Platform',
-      icon: ShoppingCart,
-      description: 'A full-featured e-commerce platform built with React, Node.js, and MongoDB. Includes user authentication, product management, and payment integration.',
-      image: 'https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      technologies: [
-        { icon: ReactIcon, name: 'React' },
-        { icon: NodeIcon, name: 'Node.js' },
-        { icon: MongoDbIcon, name: 'MongoDB' },
-        { icon: StripeIcon, name: 'Stripe' }
-      ],
-      github: 'https://github.com',
-      demo: 'https://demo.com',
-    },
-    {
-      title: 'Task Management App',
-      icon: ListTodo,
-      description: 'A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
-      image: 'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      title: 'Real Estate Agency',
+      icon: Home,
+      description: 'Penthouse: A modern real estate agency platform where users can mint properties as NFTs, enabling secure blockchain-based ownership and transactions.',
+      image: penthouseImg,
       technologies: [
         { icon: NextJsIcon, name: 'Next.js' },
-        { icon: TypeScriptIcon, name: 'TypeScript' },
-        { icon: PostgreSqlIcon, name: 'PostgreSQL' },
+        { icon: NodeIcon, name: 'Node.js' },
+        { icon: MongoDbIcon, name: 'MongoDB' },
         { icon: SocketIoIcon, name: 'Socket.io' }
       ],
       github: 'https://github.com',
-      demo: 'https://demo.com',
+      demo: 'http://penthouse.click',
     },
     {
-      title: 'Weather Dashboard',
-      icon: Cloud,
-      description: 'A weather dashboard that displays current weather conditions and forecasts for multiple locations using weather API integration.',
-      image: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      title: 'Pizza Delivery Shop',
+      icon: Pizza,
+      description: 'Pizzeria: An online pizza shop featuring an AI-powered calorie tracking tool, allowing users to customize orders and monitor nutritional intake.',
+      image: pizeriaImg,
       technologies: [
         { icon: ReactIcon, name: 'React' },
         { icon: TypeScriptIcon, name: 'TypeScript' },
-        { icon: OpenWeatherIcon, name: 'Weather API' }
+        { icon: MongoDbIcon, name: 'MongoDB' },
+        { icon: AiIcon, name: 'AI' }
       ],
       github: 'https://github.com',
-      demo: 'https://demo.com',
+      demo: 'http://pizeria.store',
+    },
+    {
+      title: 'Quiz Website',
+      icon: HelpCircle,
+      description: 'Full Stack Quiz App: A dynamic quiz platform built with React and TypeScript, utilizing Firestore for data storage and Firebase for authentication.',
+      image: quizappImg,
+      technologies: [
+        { icon: ReactIcon, name: 'React' },
+        { icon: TypeScriptIcon, name: 'TypeScript' },
+        { icon: FirebaseIcon, name: 'Firebase' }
+      ],
+      github: 'https://github.com',
+      demo: 'https://js-quizmax.netlify.app',
     },
   ];
 
@@ -129,7 +112,6 @@ const Projects = () => {
                   background: 'linear-gradient(120deg, rgba(59,130,246,0.3), rgba(168,85,247,0.3), rgba(16,185,129,0.3))',
                   backgroundSize: '200% 200%',
                   animation: 'gradientShift 8s ease infinite, pulse 3s ease-in-out infinite alternate',
-                  filter: 'blur(8px)',
                 }}
               />
               
