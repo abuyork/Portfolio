@@ -1,48 +1,62 @@
 import { Github, Linkedin, Mail, ChevronDown} from 'lucide-react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { AuthAnimatedBackground } from './common/AnimatedBackground';
 
 const Hero = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
-  const [nameText, setNameText] = useState("Alex Abdugani");
-  const [titleText, setTitleText] = useState("Full Stack Developer");
-  const [descText, setDescText] = useState("Building beautiful, functional, and scalable web applications with modern technologies.");
+  const rafRef = useRef<number | null>(null);
+  const lastScrollY = useRef(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+  // Memoized scroll handler to avoid recreating on every render
+  const handleScroll = useCallback(() => {
+    // Store current scroll position
+    lastScrollY.current = window.scrollY;
+    
+    // Cancel any pending animation frame
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+    }
+    
+    // Schedule the animation frame
+    rafRef.current = requestAnimationFrame(() => {
+      const scrollPosition = lastScrollY.current;
       const windowHeight = window.innerHeight;
       const progress = Math.min(1, scrollPosition / windowHeight);
-      setScrollProgress(progress);
-
-      // Text fade calculations
-      const nameLength = Math.floor((1 - progress) * "Alex Abdugani".length);
-      const titleLength = Math.floor((1 - progress) * "Full Stack Developer".length);
-      const descLength = Math.floor((1 - progress) * "Building beautiful, functional, and scalable web applications with modern technologies.".length);
-
-      setNameText("Alex Abdugani".slice(0, Math.max(0, nameLength)));
-      setTitleText("Full Stack Developer".slice(0, Math.max(0, titleLength)));
-      setDescText("Building beautiful, functional, and scalable web applications with modern technologies.".slice(0, Math.max(0, descLength)));
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
       
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-      const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-      setMousePosition({ x, y });
-    };
+      // Update all states in one batch
+      setScrollProgress(progress);
+      rafRef.current = null;
+    });
+  }, []);
 
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+    const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+    setMousePosition({ x, y });
+  }, []);
+
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousemove', handleMouseMove);
+    
+    // Initial calculation
+    handleScroll();
+    
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
+      
+      // Cleanup any pending animation frame
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
-  }, []);
+  }, [handleScroll, handleMouseMove]);
 
   const containerStyle = {
     transform: `
@@ -55,7 +69,8 @@ const Hero = () => {
     transformOrigin: 'center center',
     transition: 'transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1)',
     borderRadius: `${scrollProgress * 100}px`,
-  };
+    '--text-opacity': 1 - scrollProgress, // CSS variable for text opacity
+  } as React.CSSProperties;
 
   const parallaxStyle = (depth: number) => ({
     transform: `
@@ -69,11 +84,12 @@ const Hero = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative h-[100vh] flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d rounded-[20px] mb-16"
+      className="relative min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d rounded-[20px] mb-16"
       style={{
         ...containerStyle,
         transformStyle: 'preserve-3d',
         boxShadow: `0 ${scrollProgress * 50}px ${scrollProgress * 100}px rgba(0,0,0,0.3)`,
+        willChange: 'transform',
       }}
     >
       <AuthAnimatedBackground />
@@ -100,41 +116,67 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center preserve-3d flex flex-col justify-center h-full">
-        {/* Content sections with reduced sizes */}
+        {/* Content sections with CSS variable-based fade animation */}
         <div className="space-y-4 md:space-y-6">
-          {/* Name section - reduced size */}
+          {/* Name section - using CSS variables for opacity */}
           <div className="relative preserve-3d" style={parallaxStyle(0.4)}>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold opacity-0 animate-slide-up">
-              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500" style={{ fontFamily: '"Alex Brush", cursive' }}>
-                {nameText.split(' ')[0]}
+              <span 
+                className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500"
+                style={{
+                  fontFamily: '"Alex Brush", cursive',
+                  opacity: 'var(--text-opacity, 1)'
+                }}
+              >
+                Alex
               </span>
-              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500" style={{ fontFamily: '"Alex Brush", cursive' }}>
-                {nameText.split(' ')[1]}
+              <span 
+                className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500"
+                style={{
+                  fontFamily: '"Alex Brush", cursive',
+                  opacity: 'var(--text-opacity, 1)'
+                }}
+              >
+                Abdugani
               </span>
             </h1>
             <div className="absolute -inset-x-16 -inset-y-8 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-emerald-500/20 blur-3xl -z-10 animate-pulse" />
           </div>
           
-          {/* Title section - reduced size */}
+          {/* Title section - using CSS variables for opacity */}
           <div className="relative preserve-3d" style={parallaxStyle(0.3)}>
             <h2 className="text-lg md:text-2xl lg:text-3xl font-light text-gray-300 opacity-0 animate-slide-up animation-delay-200">
-              <span className="font-normal text-white relative group">
-                {titleText}
-                <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 group-hover:w-1/2 transition-all duration-300" 
-                      style={{ transform: 'translateX(-50%)' }} />
+              <span 
+                className="font-normal text-white relative group"
+                style={{ opacity: 'var(--text-opacity, 1)' }}
+              >
+                Full Stack Developer
+                <span 
+                  className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 group-hover:w-1/2 transition-all duration-300" 
+                  style={{ transform: 'translateX(-50%)' }} 
+                />
               </span>
             </h2>
           </div>
           
-          {/* Description section - reduced size and width */}
+          {/* Description section - using CSS variables for opacity */}
           <div className="relative preserve-3d" style={parallaxStyle(0.2)}>
-            <p className="text-base md:text-lg text-gray-400 max-w-xl mx-auto opacity-0 animate-slide-up animation-delay-400 leading-relaxed group">
-              {descText}
+            <p 
+              className="text-base md:text-lg text-gray-400 max-w-xl mx-auto opacity-0 animate-slide-up animation-delay-400 leading-relaxed group"
+              style={{ opacity: 'var(--text-opacity, 1)' }}
+            >
+              Building beautiful, functional, and scalable web applications with modern technologies.
             </p>
           </div>
 
-          {/* Social links section - reduced spacing */}
-          <div className="flex justify-center space-x-4 md:space-x-6 opacity-0 animate-slide-up animation-delay-600" style={parallaxStyle(0.3)}>
+          {/* Social links section - using CSS variables for opacity */}
+          <div 
+            className="flex justify-center space-x-4 md:space-x-6 opacity-0 animate-slide-up animation-delay-600" 
+            style={{
+              ...parallaxStyle(0.3),
+              opacity: 'var(--text-opacity, 1)'
+            }}
+          >
             {/* Social links with reduced padding */}
             <a href="https://github.com/abuyork" target="_blank" rel="noopener noreferrer" 
                className="group relative p-3 rounded-full hover:bg-gray-800/30 backdrop-blur-sm transition-all duration-300">
@@ -165,10 +207,12 @@ const Hero = () => {
           </div>
         </div>
         
-        {/* CTA button section - reduced size */}
+        {/* CTA button section - using CSS variables for opacity */}
         <div className="relative preserve-3d mt-6" style={parallaxStyle(0.2)}>
           <a href="#about"
-             className="group relative inline-flex items-center gap-2 px-6 py-3 opacity-0 animate-slide-up animation-delay-800 overflow-hidden">
+             className="group relative inline-flex items-center gap-2 px-6 py-3 opacity-0 animate-slide-up animation-delay-800 overflow-hidden"
+             style={{ opacity: 'var(--text-opacity, 1)' }}
+          >
             {/* Button styling remains the same */}
             <span className="relative z-10 font-medium text-white text-sm">
               Explore My Work
@@ -178,10 +222,13 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Scroll indicator - reduced size */}
+      {/* Scroll indicator - using CSS variables for opacity */}
       <div 
         className="absolute bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 animate-fade-in animation-delay-1000"
-        style={parallaxStyle(0.2)}
+        style={{
+          ...parallaxStyle(0.2),
+          opacity: 'var(--text-opacity, 1)'
+        }}
       >
         <div className="relative w-5 h-8 border-2 border-white/30 rounded-full flex justify-center hover:border-white/50 transition-colors group">
           <div className="w-1 h-2 bg-gradient-to-b from-white/50 to-white/20 rounded-full mt-2 group-hover:h-4 transition-all duration-300" />

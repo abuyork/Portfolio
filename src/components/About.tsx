@@ -1,6 +1,6 @@
 import { Laptop, Database, Layout, Palette } from 'lucide-react';
 import { motion, useAnimation, useInView } from 'framer-motion';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { AuthAnimatedBackground } from './common/AnimatedBackground';
 import { 
   SiReact, SiJavascript, SiNodedotjs, SiExpress, SiNestjs, 
@@ -14,6 +14,7 @@ const About = () => {
   const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLElement>(null);
+  const rafRef = useRef<number | null>(null);
 
   const services = [
     {
@@ -68,18 +69,34 @@ const About = () => {
     }
   }, [isInView, controls]);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!containerRef.current) return;
+    
+    // Cancel any pending animation frame for mouse move
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+    }
+    
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = containerRef.current!.getBoundingClientRect();
       const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
       const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
       setMousePosition({ x, y });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+      rafRef.current = null;
+    });
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      
+      // Cleanup any pending animation frame
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [handleMouseMove]);
 
   const parallaxStyle = (depth: number) => ({
     transform: `
@@ -88,16 +105,18 @@ const About = () => {
       translateZ(${depth * 50}px)
     `,
     transition: 'transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1)',
+    willChange: 'transform',
   });
 
   return (
     <motion.section 
       id="about" 
       ref={containerRef}
-      className="relative min-h-[90vh] py-16 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
+      className="relative min-h-[100vh] py-16 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden preserve-3d"
       style={{
         transformStyle: 'preserve-3d',
         perspective: '2000px',
+        willChange: 'transform',
       }}
     >
       {/* Background layer */}

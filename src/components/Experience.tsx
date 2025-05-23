@@ -76,12 +76,13 @@ const Experience = () => {
                 style={{
                   backgroundColor: '#0e131f',
                   boxShadow: '0 -10px 100px 10px rgba(78, 99, 255, 0.25), 0 0 10px 0 rgba(0, 0, 0, 0.5)',
+                  perspective: 1000,
+                  transformStyle: 'preserve-3d',
                 }}
                 animate={{
                   y: isHovered ? -5 : 0,
                   rotateX: rotation.x,
                   rotateY: rotation.y,
-                  perspective: 1000,
                 }}
                 transition={{
                   type: 'spring',
@@ -99,6 +100,7 @@ const Experience = () => {
                     background:
                       'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 80%, rgba(255,255,255,0.05) 100%)',
                     backdropFilter: 'blur(2px)',
+                    transformStyle: 'preserve-3d',
                   }}
                   animate={{
                     opacity: isHovered ? 0.7 : 0.5,
@@ -115,6 +117,7 @@ const Experience = () => {
                     background:
                       'radial-gradient(ellipse at bottom right, rgba(172, 92, 255, 0.7) -10%, rgba(79, 70, 229, 0) 70%),radial-gradient(ellipse at bottom left, rgba(56, 189, 248, 0.7) -10%, rgba(79, 70, 229, 0) 70%)',
                     filter: 'blur(40px)',
+                    transformStyle: 'preserve-3d',
                   }}
                   animate={{
                     opacity: isHovered ? 0.9 : 0.8,
@@ -124,13 +127,14 @@ const Experience = () => {
                   transition={{ duration: 0.4, ease: 'easeOut' }}
                 />
                 {/* Card content */}
-                <motion.div className="relative flex flex-col h-full p-8 z-40">
+                <motion.div className="relative flex flex-col h-full p-8 z-40" style={{ transformStyle: 'preserve-3d' }}>
                   <motion.div
                     className="w-12 h-12 rounded-full flex items-center justify-center mb-6"
                     style={{
                       background: 'linear-gradient(225deg, #171c2c 0%, #121624 100%)',
                       position: 'relative',
                       overflow: 'hidden',
+                      transformStyle: 'preserve-3d',
                     }}
                     animate={{
                       boxShadow: isHovered
