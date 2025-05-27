@@ -410,7 +410,7 @@ const About = () => {
                     hover:drop-shadow-[0_0_10px_currentColor]`} 
                   />
                   <motion.span 
-                    className="absolute top-full mt-2 text-xs text-gray-400 whitespace-nowrap"
+                    className="absolute top-full mt-2 text-xs text-gray-400 whitespace-nowrap hidden sm:block"
                   >
                     {tooltip}
                   </motion.span>
