@@ -1,6 +1,7 @@
 import { Github, Linkedin, Mail, ChevronDown} from 'lucide-react';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { AuthAnimatedBackground } from './common/AnimatedBackground';
+import DevImage from '../assets/dev-image/Alex3.jpeg';
 
 const Hero = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -115,52 +116,73 @@ const Hero = () => {
         />
       </div>
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center preserve-3d flex flex-col justify-center h-full">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center preserve-3d flex flex-col justify-center h-full">
         {/* Content sections with CSS variable-based fade animation */}
         <div className="space-y-4 md:space-y-6">
-          {/* Name section - using CSS variables for opacity */}
-          <div className="relative preserve-3d" style={parallaxStyle(0.4)}>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold opacity-0 animate-slide-up">
-              <span 
-                className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500"
+
+          {/* Image and Name Horizontally Aligned */}
+          <div className="flex flex-col md:flex-row items-center justify-center md:space-x-12 space-y-4 md:space-y-0">
+            {/* Developer Image Section */}
+            <div className="relative preserve-3d" style={parallaxStyle(0.5)}>
+              <img
+                src={DevImage}
+                alt="Alex Abdugani"
+                className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mx-auto object-cover border-4 border-purple-500/30 opacity-0 animate-slide-up"
                 style={{
-                  fontFamily: '"Alex Brush", cursive',
-                  opacity: 'var(--text-opacity, 1)'
+                  opacity: 'var(--text-opacity, 1)',
+                  clipPath: 'polygon(40% 0%, 70% 10%, 100% 35%, 90% 70%, 60% 100%, 30% 90%, 0% 60%, 10% 30%)',
+                  filter: `drop-shadow(6px 6px 10px rgba(0, 0, 0, ${0.3 * (1 - scrollProgress)})) drop-shadow(0px 0px 15px rgba(128, 0, 128, ${0.2 * (1 - scrollProgress)}))`
                 }}
-              >
-                Alex
-              </span>
-              <span 
-                className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500"
-                style={{
-                  fontFamily: '"Alex Brush", cursive',
-                  opacity: 'var(--text-opacity, 1)'
-                }}
-              >
-                Abdugani
-              </span>
-            </h1>
-            <div className="absolute -inset-x-16 -inset-y-8 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-emerald-500/20 blur-3xl -z-10 animate-pulse" />
-          </div>
-          
-          {/* Title section - using CSS variables for opacity */}
-          <div className="relative preserve-3d" style={parallaxStyle(0.3)}>
-            <h2 className="text-lg md:text-2xl lg:text-3xl font-light text-gray-300 opacity-0 animate-slide-up animation-delay-200">
-              <span 
-                className="font-normal text-white relative group"
-                style={{ opacity: 'var(--text-opacity, 1)' }}
-              >
-                Full Stack Developer
-                <span 
-                  className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 group-hover:w-1/2 transition-all duration-300" 
-                  style={{ transform: 'translateX(-50%)' }} 
-                />
-              </span>
-            </h2>
+              />
+              <div className="absolute inset-0 mx-auto w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-emerald-500/10 blur-2xl -z-10 animate-pulse" />
+            </div>
+
+            {/* Name and Title Block */}
+            <div className="text-center md:text-left">
+              {/* Name section - using CSS variables for opacity */}
+              <div className="relative preserve-3d" style={parallaxStyle(0.4)}>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold opacity-0 animate-slide-up">
+                  <span 
+                    className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500"
+                    style={{
+                      fontFamily: '"Alex Brush", cursive',
+                      opacity: 'var(--text-opacity, 1)'
+                    }}
+                  >
+                    Alex
+                  </span>
+                  <span 
+                    className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 hover:from-emerald-500 hover:via-purple-500 hover:to-blue-500 transition-all duration-500"
+                    style={{
+                      fontFamily: '"Alex Brush", cursive',
+                      opacity: 'var(--text-opacity, 1)'
+                    }}
+                  >
+                    Abdugani
+                  </span>
+                </h1>
+                <div className="absolute -inset-x-16 -inset-y-8 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-emerald-500/20 blur-3xl -z-10 animate-pulse" />
+              </div>
+              
+              {/* Title section - using CSS variables for opacity */}
+              <div className="relative preserve-3d mt-1 md:mt-2" style={parallaxStyle(0.3)}>
+                <h2 className="text-lg md:text-xl lg:text-2xl font-light text-gray-300 opacity-0 animate-slide-up animation-delay-200">
+                  <span 
+                    className="font-normal text-white relative group"
+                    style={{ opacity: 'var(--text-opacity, 1)' }}
+                  >
+                    Full Stack Developer
+                    <span 
+                      className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 group-hover:w-full transition-all duration-300" 
+                    />
+                  </span>
+                </h2>
+              </div>
+            </div>
           </div>
           
           {/* Description section - using CSS variables for opacity */}
-          <div className="relative preserve-3d" style={parallaxStyle(0.2)}>
+          <div className="relative preserve-3d pt-4 md:pt-6" style={parallaxStyle(0.2)}>
             <p 
               className="text-base md:text-lg text-gray-400 max-w-xl mx-auto opacity-0 animate-slide-up animation-delay-400 leading-relaxed group"
               style={{ opacity: 'var(--text-opacity, 1)' }}
