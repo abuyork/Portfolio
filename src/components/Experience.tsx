@@ -7,34 +7,29 @@ const Experience = () => {
     {
       company: 'Innovatech Development',
       position: 'Full Stack Developer',
-      period: 'Oct 2024 - Apr 2025',
-      description: 'Developed SPA applications using React, TypeScript, and EJS. Built state management with Redux and Context. Enhanced user experience with animations (AnimeJs, ThreeJs, FiberJs) and implemented rich text editing (TUI Editor, TViewer). Implemented internationalization with React-i18next. Maintained package integrity and managed dependencies. Worked with Figma wireframes and flowcharts.',
+      period: 'Jul 2024 - Apr 2025',
+      description: `Designed and built multiple scalable RESTful and GraphQL APIs using NestJS, TypeScript, and Apollo Server, serving as the core backend for complex web and mobile frontend clients. Engineered and integrated critical frontend features with Next.js (Pages Router), React Query, and Apollo Client, collaborating closely with UI/UX designers to deliver robust user experiences across key application modules. Streamlined application deployment workflows by containerizing services with Docker, managing process control with PM2, and configuring NGINX as a reverse proxy, enhancing system stability and reducing manual intervention.`,
       achievements: [
-        'Built state management using Redux and Context',
-        'Enhanced UX with advanced animations and rich text editing',
-        'Implemented internationalization and managed dependencies',
-      ],
-    },
-    {
-      company: 'ITC LT Company',
-      position: 'Backend & Full Stack Developer',
-      period: 'Apr 2024 - Oct 2024',
-      description: 'Participated in a blockchain project, built chat room and mobile version of the website. Designed and developed robust RESTful APIs and optimized database schemas using MongoDB and other NoSQL databases.',
-      achievements: [
-        'Built chat room and mobile web version',
-        'Developed RESTful APIs for seamless data exchange',
-        'Optimized database schemas and implemented data models',
+        'Designed and built scalable RESTful and GraphQL APIs with NestJS, TypeScript, and Apollo Server',
+        'Integrated frontend features using Next.js, React Query, and Apollo Client in collaboration with UI/UX designers',
+        'Streamlined deployments with Docker, PM2, and NGINX for improved stability',
+        'Implemented real-time updates with WebSocket and Socket.IO',
+        'Led architectural planning, database ER modeling, and flowchart creation for scalable growth',
       ],
     },
     {
       company: 'Webbrain Solution',
       position: 'Frontend Developer',
-      period: 'May 2023 - Jan 2024',
-      description: 'Translated design wireframes and mockups into pixel-perfect, interactive UIs using React.js. Collaborated with UX/UI designers and implemented responsive designs for various devices.',
+      period: 'Apr 2022 - Jun 2024',
+      description: `Developed and launched multiple responsive landing pages and client websites using React, TypeScript, and EJS, consistently delivering on tight deadlines in a fast-paced environment supporting early-stage product iterations. Built highly reusable and cross-browser compatible UI components with MUI and Bootstrap, directly contributing to the consistent user experience for both internal tools and outsourced client projects. Enhanced frontend architecture by implementing Redux Toolkit and Context API, significantly improving complex application state management and developer experience for future feature expansion. Created rich, animated user experiences using Three.js, React Fiber, and Anime.js on marketing pages, elevating user engagement and product presentation. `,
       achievements: [
-        'Translated wireframes into interactive UIs',
-        'Collaborated with UX/UI designers',
-        'Implemented responsive designs for all devices',
+        'Developed and launched responsive landing pages and client websites with React, TypeScript, and EJS',
+        'Built highly reusable, cross-browser UI components using MUI and Bootstrap',
+        'Enhanced frontend architecture with Redux Toolkit and Context API for scalable state management',
+        'Created rich, animated user experiences with Three.js, React Fiber, and Anime.js',
+        'Integrated multilingual support using React-i18next for key client websites',
+        'Helped develop a standardized design system in Figma with designers',
+        'Actively participated in sprint planning, code reviews, and weekly standups',
       ],
     },
   ];
@@ -48,7 +43,7 @@ const Experience = () => {
           </h2>
           <div className="w-10 h-1 bg-blue-500 mx-auto"></div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 gap-x-10 justify-center items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-10 justify-center items-start">
           {experiences.map((exp, index) => {
             const [isHovered, setIsHovered] = useState(false);
             const [rotation, setRotation] = useState({ x: 0, y: 0 });
